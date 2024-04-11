@@ -35,7 +35,7 @@ function AddItem(){
     const [image, setPhotos] = useState([]); // State to store the base64 string of the image
     
     const genuri=["drama","poezie","roman","nuvela","epopee","eseu","jurnal","memorialistica","publicistica","biografie",
-    "autobiografie","corespondenta","critica","teatru","scenariu","altele"]
+    "autobiografie","corespondenta","critica","teatru","scenariu","fantasy","altele"]
 
 
 
