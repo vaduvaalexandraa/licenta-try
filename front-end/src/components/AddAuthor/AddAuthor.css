@@ -1,0 +1,46 @@
+.add-author-container{
+        max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .add-author-container h1 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .add-author-container form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .add-author-container label {
+    margin-bottom: 10px;
+  }
+  
+  .add-author-container input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+  }
+  
+  .add-author-container button {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .add-author-container button:hover {
+    background-color: #0056b3;
+  }

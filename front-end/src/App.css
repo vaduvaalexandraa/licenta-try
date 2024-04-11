@@ -1,0 +1,18 @@
+.app-header{
+
+  height: 100%;
+  width: 100%;
+  position: relative;
+}
+
+.logo_platforma{
+  width: 95px;
+  height: 85px;
+  display: flex;
+  justify-content: center;
+  max-width: 95px;
+  min-width: 85px;
+  margin-left: 80px;
+  margin-bottom: 7px;
+  position: relative;
+}
