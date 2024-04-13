@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "./AddAuthor.css";
 import axios from "axios";
+import user_icon from "../../assets/person.png";
 
 
 function AddAuthor({onAuthorSubmit}) {
@@ -72,7 +73,7 @@ function AddAuthor({onAuthorSubmit}) {
 
     return (
         <div className="add-author-container">
-            <h1>Adauga un nou autor</h1>
+            <h1>Adauga autorul cartii</h1>
            <form onSubmit={handleSubmit}>
             <label>
                 Nume:

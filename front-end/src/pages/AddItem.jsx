@@ -86,88 +86,101 @@ function AddItem(){
     }
 
 
-    return(
+    return (
         <>
-        <div>
-           {step===1 && <AddAuthor onAuthorSubmit={handleAuthorData}></AddAuthor>}
-        
-        {step===2&& (
-        <div className="add-book-container">
-        <h1>Adauga o noua carte</h1>
-            <form onSubmit={handleSubmit}>
-                <label>
-                    ISBN:
-                    <input
-                        type="text"
-                        value={ISBN}
-                        onChange={(e) => setISBN(e.target.value)}
-                    />
-                </label>
-                <label>
-                    Titlu:
-                    <input
-                        type="text"
-                        value={titlu}
-                        onChange={(e) => setTitlu(e.target.value)}
-                    />
-                </label>
-                <label>
-                    Gen literar:
-                    <select value={genLiterar} onChange={(e) => setGenLiterar(e.target.value)}>
-                        <option value="">Selecteaza un gen literar</option>
-                        {genuri.map((gen,index) => (
-                            <option key={index} value={gen}>
-                                {gen}
-                            </option>
-                        ))}
-                    </select>
-                </label>
-                <label>
-                    Anul publicarii:
-                    <input
-                        type="number"
-                        value={anulPublicarii}
-                        onChange={(e) => setAnulPublicarii(e.target.value)}
-                    />
-                </label>
-                <label>
-                    Numar pagini:
-                    <input
-                        type="number"
-                        value={numarPagini}
-                        onChange={(e) => setNumarPagini(e.target.value)}
-                    />
-                </label>
-                <label>
-                    Descriere:
-                    <textarea
-                        value={descriere}
-                        onChange={(e) => setDescriere(e.target.value)}
-                    />
-                </label>
-                <label>
-                    Numar exemplare disponibile:
-                    <input
-                        type="number"
-                        value={nrExemplareDisponibile}
-                        onChange={(e) => setNrExemplareDisponibile(e.target.value)}
-                    />
-                </label>
-                <label>
-                    Imagine:
-                    <input type="file" multiple onChange={(event)=>{
-                        const filelist=event.target.files;
-                        postMultipleFiles(filelist);
-                    }
-    
-                    } />
-                </label>
-                <button type="submit">Adauga carte</button>
-            </form>
-            </div>)}
+            <div className="book-add">
+                {step === 1 && <AddAuthor onAuthorSubmit={handleAuthorData}></AddAuthor>}
+
+                {step === 2 && (
+                    <div className="add-book-container">
+                        <h1>Adauga o noua carte</h1>
+                        <form onSubmit={handleSubmit}>
+                            <div className="form-group">
+                                <label htmlFor="ISBN">ISBN:</label>
+                                <input
+                                    type="text"
+                                    id="ISBN"
+                                    value={ISBN}
+                                    onChange={(e) => setISBN(e.target.value)}
+                                />
+                            </div>
+                            <div className="form-group">
+                                <label htmlFor="titlu">Titlu:</label>
+                                <input
+                                    type="text"
+                                    id="titlu"
+                                    value={titlu}
+                                    onChange={(e) => setTitlu(e.target.value)}
+                                />
+                            </div>
+                            <div className="form-group">
+                                <label htmlFor="genLiterar">Gen literar:</label>
+                                <select
+                                    id="genLiterar"
+                                    value={genLiterar}
+                                    onChange={(e) => setGenLiterar(e.target.value)}
+                                >
+                                    <option value="">Selecteaza un gen literar</option>
+                                    {genuri.map((gen, index) => (
+                                        <option key={index} value={gen}>
+                                            {gen}
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
+                            <div className="form-group">
+                                <label htmlFor="anulPublicarii">Anul publicarii:</label>
+                                <input
+                                    type="number"
+                                    id="anulPublicarii"
+                                    value={anulPublicarii}
+                                    onChange={(e) => setAnulPublicarii(e.target.value)}
+                                />
+                            </div>
+                            <div className="form-group">
+                                <label htmlFor="numarPagini">Numar pagini:</label>
+                                <input
+                                    type="number"
+                                    id="numarPagini"
+                                    value={numarPagini}
+                                    onChange={(e) => setNumarPagini(e.target.value)}
+                                />
+                            </div>
+                            <div className="form-group">
+                                <label htmlFor="descriere">Descriere:</label>
+                                <textarea
+                                    id="descriere"
+                                    value={descriere}
+                                    onChange={(e) => setDescriere(e.target.value)}
+                                />
+                            </div>
+                            <div className="form-group">
+                                <label htmlFor="nrExemplareDisponibile">Numar exemplare disponibile:</label>
+                                <input
+                                    type="number"
+                                    id="nrExemplareDisponibile"
+                                    value={nrExemplareDisponibile}
+                                    onChange={(e) => setNrExemplareDisponibile(e.target.value)}
+                                />
+                            </div>
+                            <div className="form-group">
+                                <label htmlFor="image">Imagine:</label>
+                                <input
+                                    type="file"
+                                    id="image"
+                                    multiple
+                                    onChange={(event) => {
+                                        const filelist = event.target.files;
+                                        postMultipleFiles(filelist);
+                                    }}
+                                />
+                            </div>
+                            <button type="submit">Adauga carte</button>
+                        </form>
+                    </div>
+                )}
             </div>
         </>
-       
     );
 }
 
