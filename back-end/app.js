@@ -57,6 +57,11 @@ app.get('/carti',async (req,res)=>{
     res.send(carti);
 })
 
+app.get('/carti/:id',async (req,res)=>{
+    const carte=await Carte.findOne({where:{id:req.params.id}});
+    res.send(carte);
+});
+
 app.get('/carti/:titlu',async (req,res)=>{
     const carte=await Carte.findOne({where:{titlu:req.params.titlu}});
     res.send(carte);
@@ -77,6 +82,11 @@ app.post('/autori', async (req, res) => {
 app.get('/autori',async (req,res)=>{
     const autori=await Autor.findAll();
     res.send(autori);
+});
+
+app.get('/autori/:id',async (req,res)=>{
+    const autor=await Autor.findOne({where:{id:req.params.id}});
+    res.send(autor);
 });
 
 app.get('/autori/:nume&:prenume',async (req,res)=>{
