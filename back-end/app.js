@@ -138,6 +138,11 @@ app.post('/multifiles',uploadMulter.array('files'),(req,res)=>{
     
 });
 
+app.get('/uploads/:filename',(req,res)=>{
+    const filename=req.params.filename;
+    res.sendFile(__dirname+'/uploads/'+filename);
+});
+
 // app.get("/profile",validateToken, (req,res)=>{
 //     res.json("Profile!");
 // });

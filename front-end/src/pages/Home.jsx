@@ -17,12 +17,13 @@ function Home() {
             const booksWithAuthors = await Promise.all(data.map(async (book) => {
                 const authorResponse = await axios.get(`http://localhost:5000/autori/${book.idAutor}`);
                 const authorData = authorResponse.data;
-                const imaginee=book.imagineCarte[0];
+                const imaginee = book.imagineCarte[0];
                 console.log(imaginee);
                 return {
                     ...book,
-                    autor: authorData.nume+' '+authorData.prenume,
-                    image:`"/c:/Users/exemp/Desktop/licenta try/back-end/public/uploads/${imaginee}"`
+                    autor: authorData.nume + ' ' + authorData.prenume,
+                    // Modificare aici: utilizează ruta din backend pentru a accesa imaginile
+                    image: `http://localhost:5000/uploads/${imaginee}`
                 };
             }));
 
