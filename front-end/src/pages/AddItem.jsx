@@ -52,7 +52,8 @@ function AddItem(){
             nrExemplareDisponibile: nrExemplareDisponibile,
             imagineCarte: image
          };
-        const cv = await insertBookInDatabase(bookData);
+        if(bookData!==null){
+        const cv = await insertBookInDatabase(bookData);}
         goToHome();
         console.log(bookData);
         
