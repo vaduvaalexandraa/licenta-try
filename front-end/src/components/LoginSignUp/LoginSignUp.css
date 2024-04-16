@@ -2,7 +2,6 @@
     display: flex;
     flex-direction: column;
     margin: auto;
-    margin-top: 10px;
     width: 600px;
     background: #eceaeaf9;
     padding-bottom: 30px;
@@ -23,6 +22,7 @@
     color: #e29595 ;
     font-size: 48px;
     font-weight: 700;
+    
 }
 
 .underline{
@@ -30,6 +30,7 @@
     height: 6px;
     background: #eccaca;
     border-radius: 9px;
+    margin-bottom: 20px;
 }
 
 .inputs{
@@ -88,7 +89,8 @@
 .submit-container{
     display: flex;
     gap: 30px;
-    margin: 60px auto;
+    margin-top: 20px;
+    margin-left: 180px;
 }
 
 .submit{
