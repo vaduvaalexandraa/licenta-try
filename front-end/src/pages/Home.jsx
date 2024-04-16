@@ -59,9 +59,9 @@ function Home() {
                 </select>
                 <p>Anul publicarii</p>
                 <div className='slider'>
-                    <input type="range" min="1900" max="2021" value={minInputValue} className='min-range' onChange={handleMinInputChange} />
+                    <input type="range" min="1800" max="2024" value={minInputValue} className='min-range' onChange={handleMinInputChange} />
                     <input type="text" className='filter-min' value={minInputValue} readOnly />
-                    <input type="range" min="1900" max="2021" value={maxInputValue} className='max-range' onChange={handleMaxInputChange} />
+                    <input type="range" min="1800" max="2024" value={maxInputValue} className='max-range' onChange={handleMaxInputChange} />
                     <input type="text" className='filter-max' value={maxInputValue} readOnly />
                 </div>
                 <p>Autor</p>
