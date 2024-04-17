@@ -57,16 +57,26 @@ app.get('/carti',async (req,res)=>{
     res.send(carti);
 })
 
-app.get('/carti/:id',async (req,res)=>{
-    const carte=await Carte.findOne({where:{id:req.params.id}});
-    res.send(carte);
+app.get('/carti/find/:id',async (req,res)=>{
+    const id = req.params.id;
+    try{
+        const carte = await Carte.findByPk(id);
+        res.json(carte);
+    }catch(err){
+        console.log(err);
+        res.status(500).json({error:'Something went wrong'});
+    }
 });
 
-app.get('/carti/:titlu',async (req,res)=>{
+app.get('/carti/title/:titlu',async (req,res)=>{
     const carte=await Carte.findOne({where:{titlu:req.params.titlu}});
     res.send(carte);
 })
 
+app.delete('/carti/:id',async (req,res)=>{
+    const carte=await Carte.findOne({where:{id:req.params.id}});
+    await carte.destroy();
+    res.send('book deleted!');});
 
 app.delete('/users/:titlu',async (req,res)=>{
     const carte=await Carte.findOne({where:{titlu:req.params.titlu}});
@@ -84,12 +94,18 @@ app.get('/autori',async (req,res)=>{
     res.send(autori);
 });
 
-app.get('/autori/:id',async (req,res)=>{
-    const autor=await Autor.findOne({where:{id:req.params.id}});
-    res.send(autor);
+app.get('/autori/id/:id',async(req,res)=>{
+    const id = req.params.id;
+    try{
+        const autor = await Autor.findByPk(id);
+        res.json(autor);
+    }catch(err){
+        console.log(err);
+        res.status(500).json({error:'Something went wrong'});
+    }
 });
 
-app.get('/autori/:nume&:prenume',async (req,res)=>{
+app.get('/autori/find/:nume&:prenume',async (req,res)=>{
     const autor=await Autor.findOne({where:{nume:req.params.nume,prenume:req.params.prenume}});
     res.send(autor);
 });
@@ -138,7 +154,7 @@ app.post('/multifiles',uploadMulter.array('files'),(req,res)=>{
     
 });
 
-app.get('/uploads/:filename',(req,res)=>{
+app.get('/uploads/find/:filename',(req,res)=>{
     const filename=req.params.filename;
     res.sendFile(__dirname+'/uploads/'+filename);
 });

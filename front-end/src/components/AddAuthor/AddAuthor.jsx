@@ -35,15 +35,15 @@ function AddAuthor({onAuthorSubmit}) {
     }
         
 
-    const validateAuthorExistence = async () => {
+    const validateAuthorExistence = async (authorData) => {
         try {
-            const response = await axios.get(`http://localhost:5000/autori/${nume}&${prenume}`);
-            if (response.data) {
+            const response = await axios.get(`http://localhost:5000/autori/find/${authorData.nume}&${authorData.prenume}`);
+            if (response.data && response.data.id) {
                 window.alert("Autorul există deja în baza de date!");
                 return response.data.id;
             } else {
                 // Insert în baza de date
-                const responseFromDB =await insertAuthorInDatabase({ nume, prenume });
+                const responseFromDB = await insertAuthorInDatabase(authorData);
                 return responseFromDB.id;
             }
         } catch (error) {
@@ -51,6 +51,7 @@ function AddAuthor({onAuthorSubmit}) {
             return false;
         }
     }
+    
 
    
     

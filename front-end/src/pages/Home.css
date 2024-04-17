@@ -79,7 +79,7 @@ p{
 
 .filter-min,
 .filter-max {
-    width: 80px; 
+    width: 105px; 
     height: 20px;
     text-align: center;
     
@@ -98,17 +98,17 @@ p{
 }
 
 button {
- position: relative;
- display: inline-block;
- cursor: pointer;
- outline: none;
- border: 0;
- vertical-align: middle;
- text-decoration: none;
- font-family: inherit;
- font-size: 12px;
- margin-top: 20px;
- margin-left: 10px;
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+    outline: none;
+    border: 0;
+    vertical-align: middle;
+    text-decoration: none;
+    font-family: inherit;
+    font-size: 12px;
+    margin-top: 20px;
+    margin-left: 10px;
 }
 
 button.learn-more {
