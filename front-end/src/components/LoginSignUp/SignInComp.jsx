@@ -14,7 +14,7 @@ function LoginSignUp() {
     const navigate = useNavigate()
   
     const goToHomePage=()=>{
-      navigate("/");
+      navigate("/home");
     }
     const goToRegisterPage=()=>{
         navigate("/signup");

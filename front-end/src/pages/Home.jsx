@@ -1,11 +1,17 @@
 import React, { useState,useEffect } from 'react';
 import './Home.css';
 import CardList from '../components/BookCard/CardList';
+import Card from '../components/BookCard/Card';
 import axios from 'axios';
 
 function Home() {
+    const [carti, setCarti] = useState([]);
+
     const [books, setBooks] = useState([]);
     const [filteredBooks, setFilteredBooks] = useState([]);
+    useEffect(() => {
+        fetchBooks();
+    }, []);
 
     const genuri=["drama","poezie","roman","nuvela","epopee","eseu","jurnal","memorialistica","publicistica","biografie",
     "autobiografie","corespondenta","critica","teatru","scenariu","fantasy","altele"]
@@ -26,14 +32,12 @@ function Home() {
         setMaxInputValue(e.target.value);
     };
 
-    useEffect(() => {
-        fetchBooks();
-    }, []);
+
 
     const fetchBooks = async () => {
         try {
-            const response = await axios.get('http://localhost:5000/carti');
-            const bookData = response.data;
+            const responseD = await axios.get('http://localhost:5000/carti');
+            const bookData = responseD.data;
             const booksWithAuthors = await Promise.all(bookData.map(async (book) => {
                 const authorResponse = await axios.get(`http://localhost:5000/autori/id/${book.idAutor}`);
                 const authorData = authorResponse.data;
@@ -84,10 +88,10 @@ function Home() {
                 filteredBooks=filteredBooks.filter(book=>book.anulPublicarii>=minInputValue && book.anulPublicarii<=maxInputValue);
             }
 
-            if(autor){
-                const autorr=axios.get(`http://localhost:5000/autori/${autor}`);
-                filteredBooks=filteredBooks.filter(book=>book.idAutor===autorr.id);
-            }
+            // if(autor){
+            //     const autorr=axios.get(`http://localhost:5000/autori/${autor}`);
+            //     filteredBooks=filteredBooks.filter(book=>book.idAutor===autorr.id);
+            // }
 
     
             // Actualizarea listei de cărți afișate

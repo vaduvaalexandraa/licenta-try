@@ -1,0 +1,33 @@
+  
+ 
+ .home-container {
+    /* max-width: 800px; */
+    background-image: url('../assets/home-page-cover.jpg');
+    margin: 0 auto;
+    padding: 20px;
+   
+  }
+  
+  h1 {
+    text-align: center;
+    margin-top:30px;
+    margin-left:30px;
+    margin-right: 30px;
+    margin-bottom: 60px;
+    font-size: 40px;
+  }
+  
+  .home-descriere {
+    margin: 30px;
+    font-size: 20px;
+  }
+  
+  .home-descriere h2 {
+    margin-bottom: 10px;
+  }
+  
+  .home-descriere p {
+    margin: 5px;
+    font-size: 18px;
+  }
+  
