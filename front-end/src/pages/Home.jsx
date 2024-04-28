@@ -5,12 +5,20 @@ import Card from '../components/BookCard/Card';
 import axios from 'axios';
 
 function Home() {
+
+    
     const [carti, setCarti] = useState([]);
 
     const [books, setBooks] = useState([]);
     const [filteredBooks, setFilteredBooks] = useState([]);
+    const [autori, setAutori] = useState([]);
+
+    const[sortCriteria, setSortCriteria]=useState('');
+
+    
     useEffect(() => {
         fetchBooks();
+        fetchAuthors();
     }, []);
 
     const genuri=["drama","poezie","roman","nuvela","epopee","eseu","jurnal","memorialistica","publicistica","biografie",
@@ -21,8 +29,17 @@ function Home() {
 
     const [minValue, setMinValue] = useState(25);
     const [maxValue, setMaxValue] = useState(75);
-    const [minInputValue, setMinInputValue] = useState(1900);
-    const [maxInputValue, setMaxInputValue] = useState(2021);
+    const [minInputValue, setMinInputValue] = useState(1800);
+    const [maxInputValue, setMaxInputValue] = useState(2024);
+
+    const fetchAuthors = async () => {
+        try {
+            const response = await axios.get('http://localhost:5000/autori');
+            setAutori(response.data);
+        } catch (error) {
+            console.error('Error fetching authors:', error);
+        }
+    };
 
     const handleMinInputChange = (e) => {
         setMinInputValue(e.target.value);
@@ -67,34 +84,60 @@ function Home() {
                 return {
                     ...book,
                     autor: authorData.nume + ' ' + authorData.prenume,
-                    // Modificare aici: utilizează ruta din backend pentru a accesa imaginile
                     image: `http://localhost:5000/uploads/find/${imaginee}`
                 };
             }));
     
             let filteredBooks = booksWithAuthors;
-            if (gen) {
-                filteredBooks = filteredBooks.filter(book => book.genLiterar === gen);
-            }
-
-            if(maxInputValue){
-                filteredBooks=filteredBooks.filter(book=>book.anulPublicarii<=maxInputValue);
-            }
-            if(minInputValue){
-                filteredBooks=filteredBooks.filter(book=>book.anulPublicarii>=minInputValue);
-            }
-
-            if(maxInputValue && minInputValue){
-                filteredBooks=filteredBooks.filter(book=>book.anulPublicarii>=minInputValue && book.anulPublicarii<=maxInputValue);
-            }
-
-            // if(autor){
-            //     const autorr=axios.get(`http://localhost:5000/autori/${autor}`);
-            //     filteredBooks=filteredBooks.filter(book=>book.idAutor===autorr.id);
-            // }
-
     
-            // Actualizarea listei de cărți afișate
+            // Verifică dacă este selectat un singur filtru
+            if (gen && !maxInputValue && !minInputValue && !autor) {
+                filteredBooks = filteredBooks.filter(book => book.genLiterar === gen);
+            } else if (!gen && maxInputValue && minInputValue && !autor) { // Verifică dacă este selectat doar filtrul pentru anul publicării
+                filteredBooks = filteredBooks.filter(book => 
+                    book.anulPublicarii >= minInputValue && 
+                    book.anulPublicarii <= maxInputValue
+                );
+            } else if (gen && maxInputValue && minInputValue && !autor) { // Verifică dacă sunt selectate ambele filtre
+                filteredBooks = filteredBooks.filter(book => 
+                    book.genLiterar === gen &&
+                    book.anulPublicarii >= minInputValue && 
+                    book.anulPublicarii <= maxInputValue
+                );
+            } else if (autor && !gen && !maxInputValue && !minInputValue) { // Verifică dacă este selectat doar filtrul pentru autor
+                filteredBooks = filteredBooks.filter(book => book.idAutor === autor);
+            } else if (autor && gen && !maxInputValue && !minInputValue) { // Verifică dacă sunt selectate filtrele pentru autor și gen
+                filteredBooks = filteredBooks.filter(book => 
+                    book.idAutor === autor &&
+                    book.genLiterar === gen
+                );
+            } else if (autor && maxInputValue && minInputValue && !gen) { // Verifică dacă sunt selectate filtrele pentru autor și anul publicării
+                filteredBooks = filteredBooks.filter(book => 
+                    book.idAutor === autor &&
+                    book.anulPublicarii >= minInputValue && 
+                    book.anulPublicarii <= maxInputValue
+                );
+            } else if (gen && maxInputValue && minInputValue && autor) { // Verifică dacă sunt selectate toate filtrele
+                filteredBooks = filteredBooks.filter(book => 
+                    book.genLiterar === gen &&
+                    book.idAutor === autor &&
+                    book.anulPublicarii >= minInputValue && 
+                    book.anulPublicarii <= maxInputValue
+                );
+            } // Alte cazuri pot fi adăugate pentru combinarea altor filtre
+
+            if(sortCriteria==='an_asc'){
+                filteredBooks.sort((a,b)=>a.anulPublicarii-b.anulPublicarii);
+            }
+            if(sortCriteria==='an_desc'){
+                filteredBooks.sort((a,b)=>b.anulPublicarii-a.anulPublicarii);
+            }
+            if(sortCriteria==='litera'){
+                filteredBooks.sort((a,b)=>a.titlu.localeCompare(b.titlu));
+            }
+            
+    
+            // Actualizează lista de cărți afișate
             setBooks(filteredBooks);
         } catch (error) {
             console.error('Error fetching books:', error);
@@ -102,19 +145,21 @@ function Home() {
     }
     
     
+    
 
     return (
         <div className='homepage'>
-            <div className='container-filter'>
-                <h1>Cautare avansata</h1>
+            <div className='home-container-filter'>
+                <h2 className='titluuu'>Cautare avansata</h2>
 
                 <p>Genuri literare</p>
-                <select value={gen} onChange={(e)=>setGen(e.target.value)}>
+                <select value={gen} onChange={(e) => setGen(e.target.value)}>
                 <option value="">Selecteaza gen</option>
-                    {genuri.map((gen, index) => (
-                        <option key={gen} value={gen}>{gen}</option>
-                    ))}
+                {genuri.sort().map((gen, index) => (
+                    <option key={gen} value={gen}>{gen}</option>
+                ))}
                 </select>
+
 
                 <p>Anul publicarii</p>
                 <div className='slider'>
@@ -125,12 +170,36 @@ function Home() {
                 </div>
 
                 <p>Autor</p>
-                <input type="text" value={autor} onChange={(e)=>setAutor(e.target.value)}></input>
+                <select value={autor} onChange={(e) => setAutor(e.target.value)}>
+                <option value="">Selectează autor</option>
+                {autori.map((author, index) => (
+                    <option key={index} value={author.id}>{author.nume} {author.prenume}</option>
+                ))}
+                </select>
+
 
                 <button className="learn-more" onClick={handleFilter}>Aplica filtre</button>
+
+                <h3 className='titluu-sortare'>Sorteaza</h3>
+                
+                <div>
+                    <input type="checkbox" id="an_asc" value="an_asc" onChange={(e) => setSortCriteria(e.target.value)} />
+                    <label htmlFor="an_asc">An publicare ascendent</label>
+                </div>
+                <div>
+                    <input type="checkbox" id="an_desc" value="an_desc" onChange={(e) => setSortCriteria(e.target.value)} />
+                    <label htmlFor="an_desc">An publicare descendent</label>
+                </div>
+                <div>
+                    <input type="checkbox" id="litera" value="litera" onChange={(e) => setSortCriteria(e.target.value)} />
+                    <label htmlFor="litera">Alfabetic</label>
+                </div>
             </div>
-            <div className='container-list'>
+            <div className='home-container-list'>
                 <CardList books={books} />
+                {/* <Card image="https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__340.jpg" titlu="Titlu carte" autor="Autor carte" descriere="Descriere carte" />
+                <Card image="https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__340.jpg" titlu="Titlu carte" autor="Autor carte" descriere="Descriere carte" /> */}
+
             </div>
         </div>
     );
