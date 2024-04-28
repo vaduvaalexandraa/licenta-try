@@ -1,32 +1,37 @@
   
- 
+
  .home-container {
     /* max-width: 800px; */
+    height: 100vh;
     background-image: url('../assets/home-page-cover.jpg');
     margin: 0 auto;
     padding: 20px;
    
   }
   
-  h1 {
+  .home-container h1 {
     text-align: center;
     margin-top:30px;
     margin-left:30px;
     margin-right: 30px;
     margin-bottom: 60px;
     font-size: 40px;
+    background-color: rgba(252, 252, 252, 0.756);
   }
   
   .home-descriere {
+    background-color: rgba(252, 252, 252, 0.756);
     margin: 30px;
     font-size: 20px;
   }
   
   .home-descriere h2 {
+    background-color: rgba(252, 252, 252, 0.756);
     margin-bottom: 10px;
   }
   
   .home-descriere p {
+    background-color: rgba(252, 252, 252, 0.756);
     margin: 5px;
     font-size: 18px;
   }
