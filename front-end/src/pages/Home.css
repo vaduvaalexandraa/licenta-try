@@ -51,7 +51,7 @@ label{
     margin-left: 45px;
 }
 
-p{
+.home-container-filter p{
     margin-bottom: 10px;
     margin-top: 10px;
     font-weight: bold;
@@ -61,7 +61,7 @@ p{
 
 
 
-select{
+.home-container-filter select{
     width: 70%; 
     height: 30px;
     margin-bottom: 10px;
@@ -72,7 +72,17 @@ select{
     font-family: Times, Times New Roman, serif;
     font-weight: bold;
     font-size: 15px;
-    
+    background-color: #fee0e0;
+    border-radius: 10px;
+}
+
+.home-container-filter select option{
+
+    background-color: #fceef0
+}
+
+.home-container-filter select option:hover{
+    background-color: #fbd6d6;
 }
 
 .slider {

@@ -132,10 +132,12 @@ function Home() {
             if(sortCriteria==='an_desc'){
                 filteredBooks.sort((a,b)=>b.anulPublicarii-a.anulPublicarii);
             }
-            if(sortCriteria==='litera'){
+            if(sortCriteria==='literaAsc'){
                 filteredBooks.sort((a,b)=>a.titlu.localeCompare(b.titlu));
             }
-            
+            if(sortCriteria==='literaDesc'){
+                filteredBooks.sort((a,b)=>b.titlu.localeCompare(a.titlu));
+            }
     
             // Actualizează lista de cărți afișate
             setBooks(filteredBooks);
@@ -153,7 +155,7 @@ function Home() {
                 <h2 className='titluuu'>Cautare avansata</h2>
 
                 <p>Genuri literare</p>
-                <select value={gen} onChange={(e) => setGen(e.target.value)}>
+                <select value={gen} onChange={(e) => setGen(e.target.value)} >
                 <option value="">Selecteaza gen</option>
                 {genuri.sort().map((gen, index) => (
                     <option key={gen} value={gen}>{gen}</option>
@@ -191,8 +193,12 @@ function Home() {
                     <label htmlFor="an_desc">An publicare descendent</label>
                 </div>
                 <div>
-                    <input type="checkbox" id="litera" value="litera" onChange={(e) => setSortCriteria(e.target.value)} />
-                    <label htmlFor="litera">Alfabetic</label>
+                    <input type="checkbox" id="literaAsc" value="literaAsc" onChange={(e) => setSortCriteria(e.target.value)} />
+                    <label htmlFor="litera">Alfabetic (ascendent)</label>
+                </div>
+                <div>
+                    <input type="checkbox" id="literaDesc" value="literaDesc" onChange={(e) => setSortCriteria(e.target.value)} />
+                    <label htmlFor="litera">Alfabetic (descendent)</label>
                 </div>
             </div>
             <div className='home-container-list'>
