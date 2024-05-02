@@ -1,9 +1,13 @@
 import {BsArrowLeftCircleFill, BsArrowRightCircleFill} from "react-icons/bs";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useRef } from "react";
 import "./BookPage.css";
 import axios from "axios";
 import { useParams } from "react-router-dom";
-
+import pages_icon from "../../assets/open-book.png";
+import year_icon from "../../assets/calendar.png";
+import isbn_icon from "../../assets/bar-code.png";
+import genre_icon from "../../assets/literature.png";
+import { Rating } from 'react-simple-star-rating'
 
 function BookPage() {
     const { id } = useParams();
@@ -11,9 +15,11 @@ function BookPage() {
     const [autorCarte, setAutorCarte] = useState({});
     const [imagesCarte, setImagesCarte] = useState([]);
     const [slide, setSlide] = useState(0);
+    const scrollRef = useRef(null); 
 
     useEffect(() => {
         fetchSpecificBook();
+        window.scrollTo(0, 0);
     }, [id]); // Add id as a dependency
 
     const fetchSpecificBook = async () => { 
@@ -30,6 +36,7 @@ function BookPage() {
                 });
                 setImagesCarte(tempImages); // Set the state with the temporary array
             }
+        
         } catch (error) {
             console.error('Error fetching book:', error);
         }
@@ -44,6 +51,7 @@ function BookPage() {
         }
     }
 
+    
     const nextSlide=()=>{
         if(slide===imagesCarte.length-1){
             setSlide(0);
@@ -63,6 +71,7 @@ function BookPage() {
     
 
     return (
+        <div className="big-div">
         <div className="book-details">
             <div className="carousel-container">
             <div className="carousel">
@@ -72,7 +81,7 @@ function BookPage() {
                 <BsArrowRightCircleFill className="arrow arrow-right" onClick={nextSlide}/>
                 <span className="indicators">
                     {imagesCarte.map((_,index)=>{
-                        return <button key={index} onClick={null} 
+                        return <button key={index} onClick={()=>setSlide(index)} 
                         className={slide===index?"indicator":"indicator indicator-inactive"}></button>
                     })}
                 </span>
@@ -80,15 +89,56 @@ function BookPage() {
             </div>
             
             <div className="details-container">
-            <div className="specific-book-details">
-            <h1>{carte.titlu}</h1>
-            <h3>Gen literar: {carte.genLiterar}</h3>
-            <h4>Autor: {autorCarte.nume} {autorCarte.prenume}</h4> {/* Use + instead of +""+ */}
-            <p>{carte.descriere}</p>
+                <div className="specific-book-details">
+                    <h1>{carte.titlu}</h1>
+                    <h2>Autor: {autorCarte.nume} {autorCarte.prenume}</h2>
+                    <Rating className="rating-book"
+                        initialRating={3}
+                        readonly
+                    />
+                    <h3>DESCRIERE</h3>
+                    <div className="book-description">
+                        {carte.descriere && carte.descriere.split('.').map((sentence, index, array) => (
+                            <div key={index} className="description-sentence">{sentence.trim()}{index !== array.length - 1 && '.'}</div>
+                        ))}
+                    </div>
+                </div>
             </div>
-            </div>
-            
         </div>
+        <div className="line">
+            <div className="emoji-div">
+                <div className="input-emoji">
+                    <img src={pages_icon} alt="pages" className="emoji"/>
+                    <div>PAGINI</div>
+                    <div className="emoji-text">{carte.numarPagini}</div>
+                </div>
+                <div className="input-emoji">
+                    <img src={year_icon } alt="year" className="emoji"/>
+                    <div>AN APARITIE</div>
+                    <div className="emoji-text">{carte.anulPublicarii}</div>
+                </div>
+                <div className="input-emoji">
+                    <img src={isbn_icon } alt="isbn" className="emoji"/>
+                    <div>ISBN</div>
+                    <div className="emoji-text">{carte.ISBN}</div>
+                </div>
+                <div className="input-emoji">
+                    <img src={genre_icon} alt="genre" className="emoji"/>
+                    <div>GEN</div>
+                    <div className="emoji-text">{carte.genLiterar}</div>
+                </div>
+                
+            </div>
+
+            <div className="button-book">
+                <button className="button_lend">IMPRUMUTA</button>
+                <button className="button_wishlist">WISHLIST</button>
+
+            </div>
+        </div>
+
+        </div>
+       
         
     );
 }
