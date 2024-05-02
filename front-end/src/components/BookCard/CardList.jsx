@@ -6,7 +6,7 @@ function CardList({books}) {
 return(
     <div className="container-books">
         {books.map((book, index) => (
-            <Card key={index} image={book.image} titlu={book.titlu} autor={book.autor} descriere={book.descriere}/>
+            <Card key={index} id={book.id} image={book.image} titlu={book.titlu} autor={book.autor} descriere={book.descriere}/>
         ))}
     </div>
 );}

@@ -4,6 +4,7 @@ import SignIn from './pages/SignIn'
 import SignUp from './pages/SignUp'
 import AddItem from './pages/AddItem'
 import HomePage from './pages/HomePage'
+import BookPage from './components/BookPages/BookPage'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import './App.css'
 import Header from './components/Header'
@@ -20,6 +21,7 @@ function App() {
       <Route path="/signin" element={<SignIn />} />
       <Route path="/signup" element={<SignUp />} />
       <Route path="/addbook" element={<AddItem />} />
+      <Route path="/carte/:id" element={<BookPage />} />
     </Routes>
     
     </div>

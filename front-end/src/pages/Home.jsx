@@ -4,16 +4,18 @@ import CardList from '../components/BookCard/CardList';
 import Card from '../components/BookCard/Card';
 import axios from 'axios';
 
+
+
 function Home() {
 
-    
     const [carti, setCarti] = useState([]);
 
     const [books, setBooks] = useState([]);
     const [filteredBooks, setFilteredBooks] = useState([]);
     const [autori, setAutori] = useState([]);
-
     const[sortCriteria, setSortCriteria]=useState('');
+
+    
 
     
     useEffect(() => {
@@ -22,7 +24,7 @@ function Home() {
     }, []);
 
     const genuri=["drama","poezie","roman","nuvela","epopee","eseu","jurnal","memorialistica","publicistica","biografie",
-    "autobiografie","corespondenta","critica","teatru","scenariu","fantasy","altele"]
+    "autobiografie","corespondenta","critica","teatru","scenariu","fantasy","psihologie","altele","istorie"]
 
     const[gen, setGen]=useState('');
     const[autor,setAutor]=useState('');

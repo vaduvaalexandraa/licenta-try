@@ -159,6 +159,12 @@ app.get('/uploads/find/:filename',(req,res)=>{
     res.sendFile(__dirname+'/uploads/'+filename);
 });
 
+app.get('/uploads/:bookId', (req, res) => {
+    const bookId = req.params.bookId;
+    const file = __dirname + '/uploads/' + bookId;
+    res.sendFile(file);
+});
+
 // app.get("/profile",validateToken, (req,res)=>{
 //     res.json("Profile!");
 // });
