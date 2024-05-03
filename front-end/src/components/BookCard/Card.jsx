@@ -3,7 +3,7 @@ import './Card.css';
 import { useNavigate } from 'react-router-dom';
 
 function Card(props) {
-    const { id, image, titlu, autor, descriere } = props;
+    const { id, image, titlu, autor, descriere} = props;
     const truncatedDescriere = descriere.substring(0, 230);
     const displayDescriere = descriere.length > 200 ? `${truncatedDescriere}...` : truncatedDescriere;
     const navigate = useNavigate();

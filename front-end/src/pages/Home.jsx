@@ -187,8 +187,8 @@ function Home() {
                 <h3 className='titluu-sortare'>Sorteaza</h3>
                 
                 <div>
-                    <input type="checkbox" id="an_asc" value="an_asc" onChange={(e) => setSortCriteria(e.target.value)} />
-                    <label htmlFor="an_asc">An publicare ascendent</label>
+                <input type="checkbox" id="an_asc" value="an_asc" onChange={(e) => setSortCriteria(e.target.value)} />
+                <label htmlFor="an_asc">An publicare ascendent</label>
                 </div>
                 <div>
                     <input type="checkbox" id="an_desc" value="an_desc" onChange={(e) => setSortCriteria(e.target.value)} />
@@ -196,12 +196,13 @@ function Home() {
                 </div>
                 <div>
                     <input type="checkbox" id="literaAsc" value="literaAsc" onChange={(e) => setSortCriteria(e.target.value)} />
-                    <label htmlFor="litera">Alfabetic (ascendent)</label>
+                    <label htmlFor="literaAsc">Alfabetic (ascendent)</label>
                 </div>
                 <div>
                     <input type="checkbox" id="literaDesc" value="literaDesc" onChange={(e) => setSortCriteria(e.target.value)} />
-                    <label htmlFor="litera">Alfabetic (descendent)</label>
+                    <label htmlFor="literaDesc">Alfabetic (descendent)</label>
                 </div>
+
             </div>
             <div className='home-container-list'>
                 <CardList books={books} />

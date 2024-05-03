@@ -64,7 +64,6 @@
 }
 
 
-
 .carousel{
 
     flex-direction: column;
@@ -151,11 +150,73 @@
 }
 
 .button-book {
-    flex:6;
+    display: flex;
+    padding-top: 30px;
+    padding-left: 100px;
 }
 
 
 .button_lend{
     margin-left: 70px;
+    margin-right: 40px;
 
 }
+
+/* Stilurile pentru butonul de wishlist */
+.button_wishlist {
+    display: inline-flex; 
+    align-items: center; 
+    padding: 10px 20px;
+    background-color: #ff5252; 
+    color: #fff; 
+    border: none;
+    border-radius: 20px; 
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    position: relative; 
+    overflow: hidden; 
+}
+
+
+.button_wishlist::before {
+    content: "\2764"; 
+    font-size: 24px;
+    margin-right: 5px; 
+}
+
+
+.button_wishlist:hover {
+    background-color: #ff6b6b; 
+}
+
+
+/* Stilurile pentru butonul de imprumut */
+.button_lend {
+    display: inline-flex; 
+    align-items: center; 
+    padding: 10px 20px;
+    background-color: #4285f4; 
+    color: #fff;
+    border: none;
+    border-radius: 20px; 
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    position: relative; 
+    overflow: hidden; 
+}
+
+.button_lend::before {
+    content: "\2B07"; 
+    font-size: 24px;
+    margin-right: 5px; 
+}
+
+
+.button_lend:hover {
+    background-color: #3367d6; 
+}
+
+
+  

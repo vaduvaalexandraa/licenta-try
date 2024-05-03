@@ -41,6 +41,7 @@ function LoginSignUp() {
                     document.querySelector("input[placeholder='Email']").value="";
                     document.querySelector("input[placeholder='Password']").value="";
                     if(response==="Logged in!"){  
+                        
                         window.alert("You have successfully logged in!");
                         goToHomePage();
                     }else{

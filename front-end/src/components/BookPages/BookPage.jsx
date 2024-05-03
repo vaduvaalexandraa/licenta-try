@@ -7,7 +7,7 @@ import pages_icon from "../../assets/open-book.png";
 import year_icon from "../../assets/calendar.png";
 import isbn_icon from "../../assets/bar-code.png";
 import genre_icon from "../../assets/literature.png";
-import { Rating } from 'react-simple-star-rating'
+import { Rating } from 'react-simple-star-rating';
 
 function BookPage() {
     const { id } = useParams();
@@ -68,6 +68,8 @@ function BookPage() {
         }
     }
 
+    const [active, setActive] = useState(false)
+
     
 
     return (
@@ -105,8 +107,8 @@ function BookPage() {
                 </div>
             </div>
         </div>
-        <div className="line">
-            <div className="emoji-div">
+        
+        <div className="emoji-div">
                 <div className="input-emoji">
                     <img src={pages_icon} alt="pages" className="emoji"/>
                     <div>PAGINI</div>
@@ -126,16 +128,14 @@ function BookPage() {
                     <img src={genre_icon} alt="genre" className="emoji"/>
                     <div>GEN</div>
                     <div className="emoji-text">{carte.genLiterar}</div>
-                </div>
+            </div>
                 
-            </div>
-
-            <div className="button-book">
-                <button className="button_lend">IMPRUMUTA</button>
-                <button className="button_wishlist">WISHLIST</button>
-
-            </div>
+   
         </div>
+        <div className="button-book">
+                <button className="button_lend">IMPRUMUTA</button>
+                <button className="button_wishlist"> WISHLIST</button>
+            </div>
 
         </div>
        
