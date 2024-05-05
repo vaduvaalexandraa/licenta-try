@@ -12,7 +12,6 @@ const loginUser=async (req,res)=>{
     if(!user){
         res.status(400).json({error:"User doesn't exist!"});
     }
-
     const dbPassword=user.password;
     bcrypt.compare(password,dbPassword).then((match)=>{
         if(!match){
@@ -24,8 +23,10 @@ const loginUser=async (req,res)=>{
                 maxAge:60*60*24*30*1000,
                 httpOnly:true,
                 
-            })
-            res.json("Logged in!");}
+            });
+            //modificat, am pus si userId pentru a trimite id-ul persoanei logate
+            res.json({ message: "Logged in!", userId: user.id });}
+            
             
     });
     

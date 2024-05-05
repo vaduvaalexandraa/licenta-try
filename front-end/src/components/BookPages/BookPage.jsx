@@ -8,8 +8,14 @@ import year_icon from "../../assets/calendar.png";
 import isbn_icon from "../../assets/bar-code.png";
 import genre_icon from "../../assets/literature.png";
 import { Rating } from 'react-simple-star-rating';
+//adaugate pentru a retine id-ul userului logat
+import { UserContext } from "../../Context/UserContext";
+import { useContext } from "react";
 
 function BookPage() {
+    //adaugat pentru a retine id-ul userului logat
+    const { userId } = useContext(UserContext);
+
     const { id } = useParams();
     const [carte, setCarte] = useState({});
     const [autorCarte, setAutorCarte] = useState({});
@@ -18,6 +24,7 @@ function BookPage() {
     const scrollRef = useRef(null); 
 
     useEffect(() => {
+        console.log(userId);
         fetchSpecificBook();
         window.scrollTo(0, 0);
     }, [id]); // Add id as a dependency

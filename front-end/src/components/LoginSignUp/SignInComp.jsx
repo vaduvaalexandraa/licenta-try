@@ -6,11 +6,17 @@ import email_icon from "../../assets/email.png";
 import phone_icon from "../../assets/phone.png";
 import student_mark_icon from "../../assets/student-mark.png";
 import { useState } from "react";
+import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
-
 import axios from "axios";
+//adaugat pentru a retine id-ul userului logat
+import { UserContext } from "../../Context/UserContext";
+
 
 function LoginSignUp() {
+    //adaugat nou
+    const { setUserId } = useContext(UserContext);
+
     const navigate = useNavigate()
   
     const goToHomePage=()=>{
@@ -40,13 +46,16 @@ function LoginSignUp() {
                     console.log(response);
                     document.querySelector("input[placeholder='Email']").value="";
                     document.querySelector("input[placeholder='Password']").value="";
-                    if(response==="Logged in!"){  
-                        
+
+                    if(response.message ==="Logged in!"){
+                        //adaugat nou, am modificat din response in response.message
+                        setUserId(response.userId);
                         window.alert("You have successfully logged in!");
                         goToHomePage();
                     }else{
                         window.alert("Invalid credentials!");
                     }
+
             }else{
                 alert("Please fill all the fields!");
             }
