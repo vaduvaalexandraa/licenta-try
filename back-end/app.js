@@ -4,6 +4,7 @@ const sequelize = require('./database');
 const User = require('./models/User');
 const Carte=require('./models/Carte');
 const Autor=require('./models/Autor');
+const Wishlist=require('./models/Wishlist');
 const Imprumut=require('./models/Imprumut');
 
 app.use(express.json()); 
@@ -114,6 +115,38 @@ app.delete('/autori/:id',async (req,res)=>{
     const autor=await Autor.findOne({where:{id:req.params.id}});
     await autor.destroy();
     res.send('author deleted!');});
+
+
+//WISHLIST
+
+app.post('/wishlist', async (req, res) => {
+    const wishlist=await Wishlist.create(req.body)
+    res.send(wishlist);
+});
+
+app.get('/wishlist',async (req,res)=>{
+    const wishlist=await Wishlist.findAll();
+    res.send(wishlist);
+});
+
+app.get('/wishlist/:idUser',async (req,res)=>{
+    const wishlist=await Wishlist.findAll({where:{idUser:req.params.idUser}});
+    res.send(wishlist);
+});
+
+app.get('/wishlist/:idUser/:idCarte', async (req, res) => {
+    const wishlistItem = await Wishlist.findOne({
+        where: { idUser: req.params.idUser, idCarte: req.params.idCarte }
+    });
+    res.send(wishlistItem);
+});
+
+
+
+app.delete('/wishlist/:idUser&:idCarte',async (req,res)=>{
+    const wishlist=await Wishlist.findOne({where:{idUser:req.params.idUser,idCarte:req.params.idCarte}});
+    await wishlist.destroy();
+    res.send('book deleted from wishlist!');});
 
 //IMPRUMUT
 app.post('/imprumuturi', async (req, res) => {

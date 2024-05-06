@@ -21,6 +21,7 @@ function LoginSignUp() {
   
     const goToHomePage=()=>{
       navigate("/home");
+      window.location.reload();
     }
     const goToRegisterPage=()=>{
         navigate("/signup");
@@ -49,9 +50,11 @@ function LoginSignUp() {
 
                     if(response.message ==="Logged in!"){
                         //adaugat nou, am modificat din response in response.message
+                        sessionStorage.setItem("userId",response.userId);
                         setUserId(response.userId);
                         window.alert("You have successfully logged in!");
                         goToHomePage();
+                        
                     }else{
                         window.alert("Invalid credentials!");
                     }

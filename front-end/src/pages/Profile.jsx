@@ -1,45 +1,49 @@
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import './Profile.css';
 
-function Profile(){
-    return(
+function Profile() {
+    const idUser = sessionStorage.getItem('userId');
+    const [wishlistBooks, setWishlistBooks] = useState([]);
+
+    useEffect(() => {
+        wishlistData();
+    }, []);
+
+    const wishlistData = async () => {
+        try {
+            const response = await axios.get(`http://localhost:5000/wishlist/${idUser}`);
+            const booksIds = response.data.map(book => book.idCarte);
+            const booksDetails = await Promise.all(booksIds.map(async id => {
+                const bookResponse = await axios.get(`http://localhost:5000/carti/find/${id}`);
+                const authorResponse = await axios.get(`http://localhost:5000/autori/id/${bookResponse.data.idAutor}`);
+                const bookDetails = { ...bookResponse.data, authorName: `${authorResponse.data.nume} ${authorResponse.data.prenume}` };
+                return bookDetails;
+            }));
+            setWishlistBooks(booksDetails);
+        } catch (error) {
+            console.error('Error fetching wishlist:', error);
+        }
+    }
+
+    return (
         <div>
             <h1>Profile</h1>
             <p>Information about you will be displayed here in the future!</p>
-            {/* useEffect(() => {
-        const fetchCarti = async () => {
-            try {
-                const [carticele, autorasi] = await Promise.all([
-                    axios.get('http://localhost:5000/carti'),
-                    axios.get('http://localhost:5000/autori')
-                ]);
-
-                const carticeleData = carticele.data;
-                const autorasiData = autorasi.data;
-
-                const carticeleFinal = carticeleData.map((carte) => {
-                    const autor = autorasiData.find((autor) => autor.id === carte.idAutor);
-                    const poza = carte.imagineCarte && carte.imagineCarte.length > 0 ? carte.imagineCarte[0] : null;
-                    if (autor) {
-                        return {
-                            image: `http://localhost:5000/uploads/find/${poza}`,
-                            titlu: carte.titlu,
-                            autor: autor.nume + ' ' + autor.prenume,
-                            descriere: carte.descriere
-                        };
-                    }
-                    return null;
-                });
-
-                setCarti(carticeleFinal);
-            
-            }catch(error){
-                console.error('Error fetching books:', error);
-            }
-        };
-
-        fetchCarti();
-    }, []); */}
+            <p>Wishlist: </p>
+            {wishlistBooks.map(book => (
+                <div className='book-item' key={book.id}>
+                <div className='book-image'>
+                <img src={`http://localhost:5000/uploads/${book.imagineCarte[0]}`} alt="book" style={{width: '100px'}}/>
+                </div>
+                <div key={book.id} className='book-details-wishlist'>
+                    <p>{book.titlu}</p>
+                    <p>{book.authorName}</p>
+                </div>
+                </div>
+            ))}
         </div>
     )
-    }
-    
-    export default Profile;
+}
+
+export default Profile;

@@ -14,6 +14,7 @@ import { useContext } from "react";
 
 function BookPage() {
     //adaugat pentru a retine id-ul userului logat
+    const storedUserId = sessionStorage.getItem('userId');
     const { userId } = useContext(UserContext);
 
     const { id } = useParams();
@@ -75,7 +76,27 @@ function BookPage() {
         }
     }
 
-    const [active, setActive] = useState(false)
+    const addToWishlist = async () => {
+        try {
+            // Verificăm mai întâi dacă cartea este deja în lista de dorințe a utilizatorului
+            const idC=Number(id);
+            const existingWishlistItem = await axios.get(`http://localhost:5000/wishlist/${storedUserId}/${idC}`);
+            if (existingWishlistItem.data) {
+                console.log(existingWishlistItem.data)
+                window.alert("Cartea este deja în wishlist!");
+                return; // Ieșim din funcție dacă cartea este deja în listă
+            }
+            // Dacă cartea nu există încă în lista de dorințe, o adăugăm
+            const response = await axios.post('http://localhost:5000/wishlist', {
+                idUser: storedUserId,
+                idCarte: Number(id)
+            });
+            window.alert("Cartea a fost adăugată în wishlist!")
+            console.log(response.data); // Poți gestiona răspunsul în funcție de necesități
+        } catch (error) {
+            console.error('Error adding to wishlist:', error);
+        }
+    }
 
     
 
@@ -141,7 +162,7 @@ function BookPage() {
         </div>
         <div className="button-book">
                 <button className="button_lend">IMPRUMUTA</button>
-                <button className="button_wishlist"> WISHLIST</button>
+                <button className="button_wishlist" onClick={addToWishlist}> WISHLIST</button>
             </div>
 
         </div>

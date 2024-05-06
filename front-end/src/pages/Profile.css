@@ -1,0 +1,42 @@
+/* Stilul pentru fiecare element de carte */
+.book-item {
+    display: flex; /* Așezarea elementelor pe orizontală */
+    margin-bottom: 20px; /* Spațiere între cărți */
+    margin-left: 20px;
+    border: 1px solid #ccc; /* Bordură de 1 pixeli de culoare gri */
+    width: 50%;
+    background-color: peachpuff;
+
+  }
+  
+  /* Stil pentru imaginea cărții */
+  .book-image {
+    flex: 0 0 30%; /* Imaginile ocupă 30% din lățimea containerului principal */
+    margin-left: 10px; /* Spațierea dintre imagine și detaliile cărții */
+    margin-top: 5px;
+    margin-bottom: 5px;
+  }
+  
+  /* Stil pentru imagine */
+  .book-image img {
+    width: 100px; /* Lățimea imaginii */
+    height: auto; /* Înălțimea automată pentru a menține proporțiile */
+  }
+  
+  /* Stil pentru detaliile cărții */
+  .book-details-wishlist {
+    flex: 1; /* Detaliile cărții ocupă spațiul rămas */
+  }
+  
+  /* Stil pentru titlul cărții */
+  .book-details-wishlist p:first-child {
+    margin-top: 10px;
+    font-weight: bold; /* Textul este îngroșat */
+    font-size: 18px; /* Mărimea fontului */
+  }
+  
+  /* Stil pentru numele autorului */
+  .book-details-wishlist p:last-child {
+    margin-top: 5px; /* Spațierea între titlu și autor */
+  }
+  

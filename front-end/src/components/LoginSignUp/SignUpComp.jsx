@@ -47,7 +47,7 @@ function SingUpComp() {
             return "Parola trebuie sa contina cel putin un caracter numeric!";
         }
 
-        if (!/[!@#$%^&*]/.test(password)) {
+        if (!/[!@#$%^&*?]/.test(password)) {
             return "Parola trebuie sa contina cel putin un caracter special(!@#$%^&*)";
         }
 

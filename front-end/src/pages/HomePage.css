@@ -1,9 +1,12 @@
-  
+
+  .home-page-design{
+    background-image: url('../assets/home-page-cover.jpg');
+  }
 
  .home-container {
     /* max-width: 800px; */
     height: 100vh;
-    background-image: url('../assets/home-page-cover.jpg');
+
     margin: 0 auto;
     padding: 20px;
    
