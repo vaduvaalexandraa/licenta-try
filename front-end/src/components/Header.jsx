@@ -38,7 +38,7 @@ function Header() {
                     </>
                 ) : (
                     <>
-                        <li><NavLink to="/profile">Profile</NavLink></li>
+                        
                         <li><NavLink to="/signin">Sign In</NavLink></li>
                         <li><NavLink to="/signup">Sign Up</NavLink></li>
                     </>

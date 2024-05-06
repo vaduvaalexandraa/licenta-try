@@ -1,3 +1,60 @@
+.profile-container {
+  display: flex;
+  justify-content: space-between; /* Așază conținutul la capetele containerului */
+  align-items: flex-start; /* Așază conținutul la începutul containerului */
+}
+
+/* Stiluri pentru panoul stâng */
+.left-panel {
+  background-color: aliceblue; /* Culoare de fundal pentru panoul stâng */
+  padding: 20px; /* Spațiere internă */
+  width: 300px; /* Lățimea panoului stâng */
+}
+
+.left-panel h1{
+  text-align: center;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.left-panel h2 {
+  margin-top: 20px;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+/* Stiluri pentru opțiunile din panoul stâng */
+.left-panel ul {
+  list-style-type: none; /* Eliminarea stilului implicit al listei */
+  padding: 0;
+}
+
+.left-panel li {
+  cursor: pointer; /* Cursor de mână la hover */
+  padding: 10px 0; /* Spațiere între opțiuni */
+  text-align: center; /* Alinierea textului la centru */
+  font-size: medium;
+}
+
+.left-panel li.active {
+  background-color: rgb(247, 210, 216);
+  color: white;
+}
+
+.left-panel li:hover:not(.active) {
+  background-color: #c8c8c8; /* Culoare de fundal la hover */
+}
+
+/* Stiluri pentru conținutul profile-content */
+.wishlist-content {
+  flex: 1; /* Conținutul profile-content ocupă spațiul rămas */
+  padding: 20px; /* Spațiere internă */
+}
+
+.wishlist-content h2 {
+  margin-bottom: 20px; /* Spațiere între titlu și conținut */
+}
+
 /* Stilul pentru fiecare element de carte */
 .book-item {
     display: flex; /* Așezarea elementelor pe orizontală */
@@ -6,13 +63,14 @@
     border: 1px solid #ccc; /* Bordură de 1 pixeli de culoare gri */
     width: 50%;
     background-color: peachpuff;
+    cursor: pointer;
 
   }
   
   /* Stil pentru imaginea cărții */
   .book-image {
     flex: 0 0 30%; /* Imaginile ocupă 30% din lățimea containerului principal */
-    margin-left: 10px; /* Spațierea dintre imagine și detaliile cărții */
+    margin-left: 30px; /* Spațierea dintre imagine și detaliile cărții */
     margin-top: 5px;
     margin-bottom: 5px;
   }
