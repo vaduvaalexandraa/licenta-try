@@ -141,6 +141,13 @@ app.get('/wishlist/:idUser/:idCarte', async (req, res) => {
     res.send(wishlistItem);
 });
 
+app.delete('/wishlist/:idUser/:idCarte', async (req, res) => {
+    const wishlistItem = await Wishlist.findOne({
+        where: { idUser: req.params.idUser, idCarte: req.params.idCarte }
+    });
+    await wishlistItem.destroy();
+    res.send('Book removed from wishlist!');
+});
 
 
 app.delete('/wishlist/:idUser&:idCarte',async (req,res)=>{

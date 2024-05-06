@@ -26,6 +26,15 @@ function Profile() {
         }
     }
 
+    const removeBookFromWishlist = async (bookId) => {
+        try {
+            await axios.delete(`http://localhost:5000/wishlist/${idUser}/${bookId}`);
+            wishlistData();
+        } catch (error) {
+            console.error('Error removing book from wishlist:', error);
+        }
+    }
+
     return (
         <div>
             <h1>Profile</h1>
@@ -38,7 +47,11 @@ function Profile() {
                 </div>
                 <div key={book.id} className='book-details-wishlist'>
                     <p>{book.titlu}</p>
-                    <p>{book.authorName}</p>
+                    <p>autor: {book.authorName}</p>
+                    <p>gen: {book.genLiterar.toUpperCase()}</p>
+                    <p>an publicare: {book.anulPublicarii}</p>
+                    <button className="remove-button" onClick={() => removeBookFromWishlist(book.id)}>Elimina</button>
+
                 </div>
                 </div>
             ))}

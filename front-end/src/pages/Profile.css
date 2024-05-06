@@ -27,6 +27,10 @@
   .book-details-wishlist {
     flex: 1; /* Detaliile cărții ocupă spațiul rămas */
   }
+  .book-details-wishlist p {
+    margin: 0; /* Eliminarea marginii pentru paragrafe */
+    padding: 4px; /* Spațierea interioară */
+  }
   
   /* Stil pentru titlul cărții */
   .book-details-wishlist p:first-child {
@@ -40,3 +44,21 @@
     margin-top: 5px; /* Spațierea între titlu și autor */
   }
   
+/* Stil pentru butonul "Elimina" */
+.remove-button {
+  margin-top: 8px;
+  background-color: #dc3545; /* Culorile butonului */
+  color: white; /* Culoarea textului butonului */
+  border: none; /* Eliminarea marginii butonului */
+  padding: 7px 10px; /* Spatiere interioara */
+  cursor: pointer; /* Cursor de tip pointer la hover */
+  border-radius: 5px; /* Borda rotunda */
+  outline: none; /* Eliminarea stilului de contur */
+  text-align: center; /* Alinierea textului la centru */
+  font-size: medium;
+}
+
+/* Stil pentru butonul "Elimina" la hover */
+.remove-button:hover {
+  background-color: #c82333; /* Culorile butonului la hover */
+}
