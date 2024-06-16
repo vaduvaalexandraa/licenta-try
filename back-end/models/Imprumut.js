@@ -25,3 +25,5 @@ Imprumut.init({
     modelName:'borrow',
     timestamps:false
 });
+
+module.exports=Imprumut;

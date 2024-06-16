@@ -14,9 +14,7 @@ import { UserContext } from "../../Context/UserContext";
 
 
 function LoginSignUp() {
-    //adaugat nou
-    const { setUserId } = useContext(UserContext);
-
+    
     const navigate = useNavigate()
   
     const goToHomePage=()=>{
@@ -51,7 +49,6 @@ function LoginSignUp() {
                     if(response.message ==="Logged in!"){
                         //adaugat nou, am modificat din response in response.message
                         sessionStorage.setItem("userId",response.userId);
-                        setUserId(response.userId);
                         window.alert("You have successfully logged in!");
                         goToHomePage();
                         

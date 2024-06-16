@@ -69,12 +69,16 @@ function AddItem(){
         }
     };
 
+    
+    
+
     const postMultipleFiles = async (filelist) => {
         console.log(filelist);
         const formData = new FormData();
         for(let index=0;index<filelist.length;index++){
            const file=filelist[index];
            formData.append('files',file);
+           
         }
         try{
             const response=await axios.post("http://localhost:5000/multifiles",formData);

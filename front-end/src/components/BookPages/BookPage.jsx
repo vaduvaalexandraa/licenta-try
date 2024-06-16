@@ -11,21 +11,20 @@ import { Rating } from 'react-simple-star-rating';
 //adaugate pentru a retine id-ul userului logat
 import { UserContext } from "../../Context/UserContext";
 import { useContext } from "react";
+import PopUp from "../PopUp/PopUp";
 
 function BookPage() {
     //adaugat pentru a retine id-ul userului logat
     const storedUserId = sessionStorage.getItem('userId');
-    const { userId } = useContext(UserContext);
-
     const { id } = useParams();
     const [carte, setCarte] = useState({});
     const [autorCarte, setAutorCarte] = useState({});
     const [imagesCarte, setImagesCarte] = useState([]);
     const [slide, setSlide] = useState(0);
+    const[buttonPopup,setButtonPopup]=useState(false);
     const scrollRef = useRef(null); 
 
     useEffect(() => {
-        console.log(userId);
         fetchSpecificBook();
         window.scrollTo(0, 0);
     }, [id]); // Add id as a dependency
@@ -98,6 +97,35 @@ function BookPage() {
         }
     }
 
+    const currentDate = new Date();
+    const returnDate = new Date();
+    returnDate.setDate(currentDate.getDate() + 14);
+
+    const addToBorrowList = async () => {
+        try {
+            const idC = Number(id);
+            // Verificăm dacă există deja un împrumut pentru această carte și utilizator
+            const existingBorrowItem = await axios.get(`http://localhost:5000/imprumuturi/${storedUserId}/${idC}`);
+            
+            if (existingBorrowItem.data) {
+                window.alert("Cartea este deja imprumutata!");
+                return;
+            }
+            
+            setButtonPopup(true);
+            const response = await axios.post('http://localhost:5000/imprumuturi', {
+                idUser: storedUserId,
+                ISBNcarte: idC,
+                dataImprumut: currentDate.toISOString(),
+                dataRestituire: returnDate.toISOString()
+            });
+    
+            window.alert("Cartea a fost împrumutată!");
+            console.log(response.data);
+        } catch (error) {
+            console.error('Error adding to borrow list:', error);
+        }
+    };
     
 
     return (
@@ -161,8 +189,13 @@ function BookPage() {
    
         </div>
         <div className="button-book">
-                <button className="button_lend">IMPRUMUTA</button>
+                <button className="button_lend" onClick={addToBorrowList}>IMPRUMUTA</button>
                 <button className="button_wishlist" onClick={addToWishlist}> WISHLIST</button>
+                <PopUp trigger={buttonPopup} setTrigger={setButtonPopup}>
+                    <h3>Doresti sa plasezi imprumutul?</h3>
+                    <h4>Locatia de unde va fi disponibil pentru ridicat este: ASE ROMANA</h4>
+                    <h5>Termenul de returnare este: {returnDate.toLocaleDateString()}</h5>
+                </PopUp>
             </div>
 
         </div>

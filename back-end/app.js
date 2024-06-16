@@ -166,7 +166,31 @@ app.get('/imprumuturi',async (req,res)=>{
     res.send(imprumuturi);
 });
 
+app.get('/imprumuturi/:idUser',async (req,res)=>{
+    const imprumuturi=await Imprumut.findAll({where:{idUser:req.params.idUser}});
+    res.send(imprumuturi);
+});
 
+app.get('/imprumuturi/:idUser/:idCarte', async (req, res) => {
+    try {
+        const imprumut = await Imprumut.findOne({
+            where: { idUser: req.params.idUser, ISBNcarte: req.params.idCarte }
+        });
+        
+        res.send(imprumut);
+    } catch (error) {
+        console.error('Error fetching specific loan:', error);
+        res.status(500).send('Internal Server Error');
+    }
+});
+
+app.delete('/imprumuturi/:idImprumut', async (req, res) => {
+    const imprumut = await Imprumut.findOne({
+        where: { id: req.params.idImprumut }
+    });
+    await imprumut.destroy();
+    res.send('Imprumut removed!');
+});
 
 ///Login IN
 
