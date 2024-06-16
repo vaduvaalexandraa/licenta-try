@@ -83,6 +83,12 @@ app.delete('/users/:titlu',async (req,res)=>{
     const carte=await Carte.findOne({where:{titlu:req.params.titlu}});
     await carte.destroy();
     res.send('book deleted!');});
+
+app.put('/carti/:id',async (req,res)=>{
+    const carte=await Carte.findOne({where:{id:req.params.id}});
+    carte.nrExemplareDisponibile=req.body.nrExemplareDisponibile;
+    await carte.save();
+    res.send('book updated!');});
     
 //AUTOR
 app.post('/autori', async (req, res) => {

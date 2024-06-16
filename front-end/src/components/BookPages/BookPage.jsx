@@ -104,27 +104,34 @@ function BookPage() {
     const addToBorrowList = async () => {
         try {
             const idC = Number(id);
-            // Verificăm dacă există deja un împrumut pentru această carte și utilizator
             const existingBorrowItem = await axios.get(`http://localhost:5000/imprumuturi/${storedUserId}/${idC}`);
             
             if (existingBorrowItem.data) {
                 window.alert("Cartea este deja imprumutata!");
                 return;
             }
-            
+
             setButtonPopup(true);
+        } catch (error) {
+            console.error('Error checking borrow list:', error);
+        }
+    };
+
+    const handleConfirm = async () => {
+        try {
+            const idC = Number(id);
             const response = await axios.post('http://localhost:5000/imprumuturi', {
                 idUser: storedUserId,
                 ISBNcarte: idC,
                 dataImprumut: currentDate.toISOString(),
                 dataRestituire: returnDate.toISOString()
             });
-    
+
             window.alert("Cartea a fost împrumutată!");
-            console.log(response.data);
         } catch (error) {
             console.error('Error adding to borrow list:', error);
         }
+        setButtonPopup(false);
     };
     
 
@@ -151,9 +158,8 @@ function BookPage() {
                     <h1>{carte.titlu}</h1>
                     <h2>Autor: {autorCarte.nume} {autorCarte.prenume}</h2>
                     <Rating className="rating-book"
-                        initialRating={3}
-                        readonly
-                    />
+                        // initialRating={3}
+                        readonly/>
                     <h3>DESCRIERE</h3>
                     <div className="book-description">
                         {carte.descriere && carte.descriere.split('.').map((sentence, index, array) => (
@@ -191,13 +197,15 @@ function BookPage() {
         <div className="button-book">
                 <button className="button_lend" onClick={addToBorrowList}>IMPRUMUTA</button>
                 <button className="button_wishlist" onClick={addToWishlist}> WISHLIST</button>
-                <PopUp trigger={buttonPopup} setTrigger={setButtonPopup}>
-                    <h3>Doresti sa plasezi imprumutul?</h3>
-                    <h4>Locatia de unde va fi disponibil pentru ridicat este: ASE ROMANA</h4>
-                    <h5>Termenul de returnare este: {returnDate.toLocaleDateString()}</h5>
+                <PopUp trigger={buttonPopup} setTrigger={setButtonPopup} handleConfirm={handleConfirm}>
+                    <h3 className="title-lending">Doresti sa plasezi imprumutul?</h3>
+                    <p>Locatia de unde va fi disponibil pentru ridicat este: ASE, CSIE </p>
+                    <div className="gmap-frame">
+                        <iframe width="320" height="300" frameBorder="0" scrolling="no" marginHeight="0" marginWidth="0" src="https://maps.google.com/maps?width=320&amp;height=300&amp;hl=en&amp;q=Academia%20de%20Studii%20Economice,%20Cl%C4%83direa%20Virgil%20Madgearu,%20Calea%20Doroban%C8%9Bi%2015-17,%20Bucure%C8%99ti%20010552+(My%20Business%20Name)&amp;t=p&amp;z=19&amp;ie=UTF8&amp;iwloc=B&amp;output=embed"><a href="https://www.gps.ie/">gps vehicle tracker</a></iframe>
+                    </div>
+                    <p>Termenul de returnare este: {returnDate.toLocaleDateString()}</p>
                 </PopUp>
             </div>
-
         </div>
        
         

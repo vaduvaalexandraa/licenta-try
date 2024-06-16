@@ -65,7 +65,7 @@
     background-color: peachpuff;
     cursor: pointer;
 
-  }
+}
   
   /* Stil pentru imaginea cărții */
   .book-image {
@@ -119,4 +119,59 @@
 /* Stil pentru butonul "Elimina" la hover */
 .remove-button:hover {
   background-color: #c82333; /* Culorile butonului la hover */
+}
+
+.borrowlist-content .book-item {
+  display: flex; /* Așezarea elementelor pe orizontală */
+  margin-bottom: 20px; /* Spațiere între cărți */
+  margin-left: 20px;
+  border: 1px solid #ccc; /* Bordură de 1 pixeli de culoare gri */
+  width: 50%;
+  background-color: rgb(229, 212, 233);
+  cursor: pointer;
+}
+
+.daysleft-p{
+  font-style: italic;
+}
+
+.red-text {
+  color: red;
+  font-weight: bold;
+}
+
+.blue-text {
+  color: blue;
+  font-weight: bold;
+}
+
+.borrow-buttons-container button{
+  margin-right: 25px;
+}
+
+.borrowlist-content .extend-term-button{
+  margin-top: 5px;
+  background-color: #007bff; /* Culorile butonului */
+  color: white; /* Culoarea textului butonului */
+  border: none; /* Eliminarea marginii butonului */
+  padding: 7px 10px; /* Spatiere interioara */
+  cursor: pointer; /* Cursor de tip pointer la hover */
+  border-radius: 5px; /* Borda rotunda */
+  outline: none; /* Eliminarea stilului de contur */
+  text-align: center; /* Alinierea textului la centru */
+  font-size: medium;
+  
+}
+
+.borrowlist-content .return-button{
+  margin-top: 8px;
+  background-color: #69a32b; /* Culorile butonului */
+  color: white; /* Culoarea textului butonului */
+  border: none; /* Eliminarea marginii butonului */
+  padding: 7px 10px; /* Spatiere interioara */
+  cursor: pointer; /* Cursor de tip pointer la hover */
+  border-radius: 5px; /* Borda rotunda */
+  outline: none; /* Eliminarea stilului de contur */
+  text-align: center; /* Alinierea textului la centru */
+  font-size: medium;
 }

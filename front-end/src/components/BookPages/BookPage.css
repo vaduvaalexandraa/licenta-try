@@ -218,5 +218,32 @@
     background-color: #3367d6; 
 }
 
+.button-book .title-lending{
+    margin-bottom: 5px;
+    font-size: 1.5rem;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.button-book p{
+    margin-left:60px;
+    margin-bottom: 5px;
+    margin-top: 5px;
+    font-weight: bold;
+    color: #484848;
+}
+
+.button-book .gmap-frame{
+    margin-left: 50px;
+    margin-right: 50px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    position: relative;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}
 
   
