@@ -123,16 +123,17 @@ function BookPage() {
             const response = await axios.post('http://localhost:5000/imprumuturi', {
                 idUser: storedUserId,
                 ISBNcarte: idC,
-                dataImprumut: currentDate.toISOString(),
-                dataRestituire: returnDate.toISOString()
+                dataImprumut: currentDate.toISOString().split('T')[0], // Salvează doar data fără ora
+                dataRestituire: returnDate.toISOString().split('T')[0] // Salvează doar data fără ora
             });
-
+    
             window.alert("Cartea a fost împrumutată!");
         } catch (error) {
             console.error('Error adding to borrow list:', error);
         }
         setButtonPopup(false);
     };
+    
     
 
     return (
