@@ -2,15 +2,24 @@ import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import './Header.css';
 import logo from '../assets/logo2.png';
+import { useNavigate } from "react-router-dom";
 
 function Header() {
     const [menuOpen, setMenuOpen] = useState(false);
     const idUser = sessionStorage.getItem('userId');
 
+    const navigate = useNavigate();
+
+    const goHome=()=>{
+        navigate("/");
+        window.location.reload();
+    }
+
     const handleLogout = () => {
         sessionStorage.removeItem('userId');
         // Alte acțiuni de delogare necesare
         window.location.reload();
+        goHome();
     };
 
     const homeRoute = idUser ? "/home" : "/";
@@ -43,7 +52,8 @@ function Header() {
                         <li><NavLink to="/signup">Sign Up</NavLink></li>
                     </>
                 )}
-                <li><NavLink to="/addBook">Add Book</NavLink></li>
+                <li><NavLink to="/addBook">Contact</NavLink></li>
+                {/* <li><NavLink to="/">Contact</NavLink></li> */}
             </ul>
         </nav>
     );

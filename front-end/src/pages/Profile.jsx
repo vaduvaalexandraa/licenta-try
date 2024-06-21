@@ -176,7 +176,7 @@ function Profile() {
                                             <button className="extend-term-button" onClick={() => extendBorrow()}>Prelungeste </button>
                                             <PopUpPrelungire trigger={buttonExtendPopup} setTrigger={setButtonExtendPopup}>
                                                 {/* Aici poți adăuga conținutul specific al popup-ului */}
-                                                <h3>Conținutul popup-ului</h3>
+                                                <h3>Doriti sa prelungiti imprumutul?</h3>
                                             </PopUpPrelungire>
                                             <button className="return-button">Restituie</button>
                                         </div>
