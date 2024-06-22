@@ -35,6 +35,10 @@ app.get('/users/:id',async (req,res)=>{
 
 app.put('/users/:id',async (req,res)=>{
     const user=await User.findOne({where:{id:req.params.id}});
+    user.role=req.body.role;
+    user.firstName=req.body.firstName;
+    user.lastName=req.body.lastName;
+    user.email=req.body.email;
     user.phoneNumber=req.body.phoneNumber;
     await user.save();
     res.send('user phone number is updated!')

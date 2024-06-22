@@ -3,10 +3,13 @@ import { NavLink } from 'react-router-dom';
 import './Header.css';
 import logo from '../assets/logo2.png';
 import { useNavigate } from "react-router-dom";
+import { useEffect } from 'react';
+import axios from 'axios';
 
 function Header() {
     const [menuOpen, setMenuOpen] = useState(false);
     const idUser = sessionStorage.getItem('userId');
+    const [role, setRole] = useState('user');
 
     const navigate = useNavigate();
 
@@ -21,6 +24,22 @@ function Header() {
         window.location.reload();
         goHome();
     };
+
+    const getRole = async() => {
+        try{
+            const response = await axios.get(`http://localhost:5000/users/${idUser}`);
+            if(response.data.role==='admin'){
+                setRole(response.data.role);
+            }
+        }catch(error){
+            console.error('Error fetching user:', error);
+        }
+    }
+
+    useEffect(() => {
+        getRole();
+    }, []);
+
 
     const homeRoute = idUser ? "/home" : "/";
 
@@ -44,6 +63,9 @@ function Header() {
                     <>
                         <li><NavLink to="/profile">Profile</NavLink></li>
                         <li onClick={handleLogout}><a href="#">Logout</a></li>
+                        {role === 'admin' ? (
+                            <li><NavLink to="/admin">Admin</NavLink></li>
+                        ) : null}
                     </>
                 ) : (
                     <>

@@ -8,6 +8,7 @@ import BookPage from './components/BookPages/BookPage'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import './App.css'
 import Header from './components/Header'
+import Admin from './pages/Admin'
 
 function App() {
 
@@ -22,6 +23,7 @@ function App() {
       <Route path="/signup" element={<SignUp />} />
       <Route path="/addbook" element={<AddItem />} />
       <Route path="/carte/:id" element={<BookPage />} />
+      <Route path="/admin/*" element={<Admin />} />
     </Routes>
     
     </div>
