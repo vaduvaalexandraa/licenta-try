@@ -6,6 +6,7 @@ import './BorrowList.css';
 function BorrowList({ idUser }) {
     const [borrowsSpecificDetails, setBorrowsDetails] = useState([]);
     const [buttonExtendPopup, setButtonExtendPopup] = useState(false);
+    const [borrowToExtend, setBorrowToExtend] = useState(null);
 
     useEffect(() => {
         getBorrows();
@@ -26,12 +27,15 @@ function BorrowList({ idUser }) {
                 const bookResponse = await axios.get(`http://localhost:5000/carti/find/${borrow.ISBNcarte}`);
                 const authorResponse = await axios.get(`http://localhost:5000/autori/id/${bookResponse.data.idAutor}`);
                 const daysLeft = Math.floor((new Date(borrow.dataRestituire) - new Date()) / (1000 * 60 * 60 * 24)) + 1;
+                const daysBorrowed = Math.floor((new Date(borrow.dataRestituire) - new Date(borrow.dataImprumut)) / (1000 * 60 * 60 * 24));
                 return {
                     ...bookResponse.data,
                     authorName: `${authorResponse.data.nume} ${authorResponse.data.prenume}`,
                     returnData: borrow.dataRestituire,
                     borrowStartDate: borrow.dataImprumut,
-                    daysLeft: daysLeft
+                    daysLeft: daysLeft,
+                    idImprumut: borrow.id, 
+                    canExtend: daysBorrowed < 21 // putem sa prelungim
                 };
             }));
             setBorrowsDetails(booksDetails);
@@ -40,8 +44,32 @@ function BorrowList({ idUser }) {
         }
     }
 
-    const extendBorrow = () => {
-        setButtonExtendPopup(!buttonExtendPopup);
+    const extendBorrow = (book) => {
+        setBorrowToExtend(book);
+        setButtonExtendPopup(true);
+    }
+
+    const extendDaysBorrow = async () => {
+        try {
+            const newReturnDate = new Date(borrowToExtend.returnData);
+            newReturnDate.setDate(newReturnDate.getDate() + 7);
+            await axios.put(`http://localhost:5000/imprumuturi/${borrowToExtend.idImprumut}`, { dataRestituire: newReturnDate });
+
+            // Update the state to reflect the extension
+            setBorrowsDetails(prevDetails =>
+                prevDetails.map(book =>
+                    book.idImprumut === borrowToExtend.idImprumut
+                        ? { ...book, returnData: newReturnDate, daysLeft: book.daysLeft + 7, canExtend: false }
+                        : book
+                )
+            );
+
+            // Close the popup and reset the current borrow
+            setButtonExtendPopup(false);
+            setBorrowToExtend(null);
+        } catch (error) {
+            console.error('Error extending borrow:', error);
+        }
     }
 
     return (
@@ -51,7 +79,7 @@ function BorrowList({ idUser }) {
                 <p>Nu există împrumuturi disponibile.</p>
             ) : (
                 borrowsSpecificDetails.map(book => (
-                    <div className='book-item' key={book.id}>
+                    <div className='book-item' key={book.idImprumut}>
                         <div className='book-image'>
                             <img src={`http://localhost:5000/uploads/${book.imagineCarte[0]}`} alt="book" style={{ width: '100px' }} />
                         </div>
@@ -69,13 +97,20 @@ function BorrowList({ idUser }) {
                             }</p>
                             <p className="daysleft-p">Au mai rămas <span className={book.daysLeft < 5 ? 'red-text' : 'blue-text'}>{book.daysLeft} </span> zile până la data returului!</p>
                             <div className="borrow-buttons-container">
-                                <button className="extend-term-button" onClick={extendBorrow}>Prelungeste</button>
+                                <button 
+                                    className="extend-term-button" 
+                                    onClick={() => extendBorrow(book)}
+                                    disabled={!book.canExtend}
+                                    style={{ backgroundColor: !book.canExtend ? 'grey' : '' }}
+                                >
+                                    Prelungeste
+                                </button>
                                 <PopUpPrelungire trigger={buttonExtendPopup} setTrigger={setButtonExtendPopup}>
                                     <h3>Doriți să prelungiți împrumutul?</h3>
                                     <h4>Imprumutul se poate prelungi cu 7 zile, o singura data!</h4>
-                                    <div class="buttons-prel">
-                                    <button>Prelungeste!</button>
-                                    <button>Anuleaza!</button>
+                                    <div className="buttons-prel">
+                                        <button onClick={extendDaysBorrow}>Prelungeste!</button>
+                                        <button onClick={() => setButtonExtendPopup(false)}>Anuleaza!</button>
                                     </div>
                                 </PopUpPrelungire>
                                 <button className="return-button">Restituie</button>

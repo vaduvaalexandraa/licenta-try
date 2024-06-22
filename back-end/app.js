@@ -202,6 +202,15 @@ app.delete('/imprumuturi/:idImprumut', async (req, res) => {
     res.send('Imprumut removed!');
 });
 
+app.put('/imprumuturi/:idImprumut', async (req, res) => {
+    const imprumut = await Imprumut.findOne({
+        where: { id: req.params.idImprumut }
+    });
+    imprumut.dataRestituire = req.body.dataRestituire;
+    await imprumut.save();
+    res.send('Imprumut updated!');
+});
+
 ///Login IN
 
 

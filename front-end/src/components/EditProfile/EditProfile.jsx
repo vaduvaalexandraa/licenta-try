@@ -1,10 +1,103 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import './EditProfile.css'; // Fișierul CSS pentru stilizare
 
 function EditProfile() {
+    const [userData, setUserData] = useState({
+        firstName: '',
+        lastName: '',
+        email: '',
+        phoneNumber: ''
+    });
+
+    const idUser = sessionStorage.getItem('userId');
+
+    useEffect(() => {
+        if (idUser) {
+            fetchUserData(idUser);
+        }
+    }, [idUser]);
+
+    const fetchUserData = async (userId) => {
+        try {
+            const response = await axios.get(`http://localhost:5000/users/${userId}`);
+            const { firstName, lastName, email, phoneNumber } = response.data;
+            setUserData({ firstName, lastName, email, phoneNumber });
+        } catch (error) {
+            console.error('Error fetching user data:', error);
+        }
+    };
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setUserData(prevData => ({
+            ...prevData,
+            [name]: value
+        }));
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            await axios.put(`http://localhost:5000/users/${idUser}`, userData);
+            alert('Profilul a fost actualizat cu succes!');
+        } catch (error) {
+            console.error('Error updating user profile:', error);
+        }
+    };
+
     return (
-        <div>
-            <h2>Editează profil</h2>
-            <p>În curând...</p>
+        <div className="edit-profile-page">
+            <div className="edit-profile-container">
+                <h2 className="edit-profile-title">Editează profil ✍🏻</h2>
+                <form className="edit-profile-form" onSubmit={handleSubmit}>
+                    <label className="edit-profile-label">
+                    🧍‍♂️ Nume:
+                        <input
+                            type="text"
+                            name="firstName"
+                            value={userData.firstName}
+                            onChange={handleChange}
+                            className="edit-profile-input"
+                            required
+                        />
+                    </label>
+                    <label className="edit-profile-label">
+                    🧍‍♂️ Prenume:
+                        <input
+                            type="text"
+                            name="lastName"
+                            value={userData.lastName}
+                            onChange={handleChange}
+                            className="edit-profile-input"
+                            required
+                        />
+                    </label>
+                    <label className="edit-profile-label">
+                    📧 Email:
+                        <input
+                            type="email"
+                            name="email"
+                            value={userData.email}
+                            onChange={handleChange}
+                            className="edit-profile-input"
+                            required
+                        />
+                    </label>
+                    <label className="edit-profile-label">
+                    📞 Număr de telefon:
+                        <input
+                            type="tel"
+                            name="phoneNumber"
+                            value={userData.phoneNumber}
+                            onChange={handleChange}
+                            className="edit-profile-input"
+                            required
+                        />
+                    </label>
+                    <button type="submit" className="edit-profile-button">Actualizează profilul</button>
+                </form>
+            </div>
         </div>
     );
 }

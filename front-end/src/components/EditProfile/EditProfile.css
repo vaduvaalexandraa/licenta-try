@@ -1,0 +1,78 @@
+.edit-profile-page {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; /* Asează conținutul în partea de sus */
+    height: 100vh; /* Înălțimea completă a viewport-ului */
+    
+}
+
+.edit-profile-container {
+    margin-top: 50px;
+    max-width: 500px;
+    width: 100%;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    background-color: rgb(242, 248, 252)
+}
+
+.edit-profile-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Așezare elemente la centru pe orizontală */
+    width: 100%; /* Umple lățimea containerului */
+}
+
+.edit-profile-title {
+    text-align: center; /* Titlul centrat */
+    margin-bottom: 20px; /* Distanță între titlu și formular */
+}
+
+.edit-profile-label {
+    font-weight: bold;
+    margin-bottom: 8px;
+    text-align: left; /* Asează textul label-urilor la stânga */
+    width: 100%; /* Umple lățimea containerului */
+}
+
+.edit-profile-input {
+    padding: 8px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    outline: none;
+    width: 90%;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+
+.edit-profile-button{
+    background-color: #eeeeee;
+    border: none;
+    padding: 1rem;
+    font-size: 1rem;
+    width: 8em;
+    border-radius: 1rem;
+    color: rgb(249, 168, 168);
+    box-shadow: 0 0.4rem #dfd9d9;
+    cursor: pointer;
+}
+   
+.edit-profile-button:active {
+    color: white;
+    box-shadow: 0 0.2rem #dfd9d9;
+    transform: translateY(0.2rem);
+}
+   
+.edit-profile-button:hover:not(:disabled) {
+    background: rgb(251, 186, 186);
+    color: white;
+    text-shadow: 0 0.1rem #bcb4b4;
+}
+   
+.edit-profile-button:disabled {
+    cursor: auto;
+    color: grey;
+}
