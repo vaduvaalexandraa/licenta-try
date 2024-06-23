@@ -105,20 +105,20 @@
 /* Stil pentru butonul "Elimina" */
 .remove-button {
   margin-top: 8px;
-  background-color: #dc3545; /* Culorile butonului */
-  color: white; /* Culoarea textului butonului */
-  border: none; /* Eliminarea marginii butonului */
-  padding: 7px 10px; /* Spatiere interioara */
-  cursor: pointer; /* Cursor de tip pointer la hover */
-  border-radius: 5px; /* Borda rotunda */
-  outline: none; /* Eliminarea stilului de contur */
-  text-align: center; /* Alinierea textului la centru */
+  background-color: #dc3545; 
+  color: white; 
+  border: none; 
+  padding: 7px 10px;
+  cursor: pointer; 
+  border-radius: 5px; 
+  outline: none; 
+  text-align: center; 
   font-size: medium;
 }
 
-/* Stil pentru butonul "Elimina" la hover */
+
 .remove-button:hover {
-  background-color: #c82333; /* Culorile butonului la hover */
+  background-color: #c82333; 
 }
 
 .borrowlist-content .book-item {
@@ -175,3 +175,4 @@
   text-align: center; /* Alinierea textului la centru */
   font-size: medium;
 }
+

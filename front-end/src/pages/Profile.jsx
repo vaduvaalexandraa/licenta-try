@@ -118,7 +118,7 @@ function Profile() {
                         ))}
                     </div>
                 )}
-
+                
                 {imprumuturiOpen && (    
                     <BorrowList idUser={idUser} />
                 )}

@@ -109,8 +109,8 @@ function BorrowList({ idUser }) {
                                     <h3>Doriți să prelungiți împrumutul?</h3>
                                     <h4>Imprumutul se poate prelungi cu 7 zile, o singura data!</h4>
                                     <div className="buttons-prel">
-                                        <button onClick={extendDaysBorrow}>Prelungeste!</button>
-                                        <button onClick={() => setButtonExtendPopup(false)}>Anuleaza!</button>
+                                        <button className='extend-btn-borrow' onClick={extendDaysBorrow}>Prelungeste!</button>
+                                        <button className='cancel-btn-borrow' onClick={() => setButtonExtendPopup(false)}>Anuleaza!</button>
                                     </div>
                                 </PopUpPrelungire>
                                 <button className="return-button">Restituie</button>
