@@ -1,0 +1,84 @@
+
+
+.admin-users-container {
+    max-width: 1200px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #f8eaea;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.admin-users-container h1 {
+    text-align: center;
+    font-weight: 700;
+    color: #555;
+    margin-bottom: 20px;
+}
+
+.admin-users-container table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.admin-users-container thead tr {
+    background-color: #706f6f; /* Culoare pentru linia de sus */
+    border-bottom: 2px solid #ddd;
+}
+
+.admin-users-container th, .admin-users-container td {
+    padding: 12px 15px;
+    text-align: left;
+}
+
+.admin-users-container th {
+    text-transform: uppercase;
+    font-size: 14px;
+    color: #000000; /* Culoare text pentru linia de sus */
+}
+
+.admin-users-container tbody tr {
+    border-bottom: 1px solid #ddd;
+    background-color: #fefefe; /* Culoare pentru înregistrări */
+}
+
+.admin-users-container tbody tr:nth-of-type(even) {
+    background-color: #f2f2f2; /* Culoare pentru înregistrări alternative */
+}
+
+.admin-users-container button {
+    padding: 10px 15px;
+    margin: 5px;
+    border: none;
+    border-radius: 5px;
+    background-color: #ff7979;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.admin-users-container button:hover {
+    background-color: #ff5252;
+}
+
+.admin-users-container button:focus {
+    outline: none;
+}
+
+.admin-users-container button.primary {
+    background-color: #6c5ce7;
+}
+
+.admin-users-container button.primary:hover {
+    background-color: #341f97;
+}
+
+.admin-users-container button.secondary {
+    background-color: #74b9ff;
+}
+
+.admin-users-container button.secondary:hover {
+    background-color: #0984e3;
+}

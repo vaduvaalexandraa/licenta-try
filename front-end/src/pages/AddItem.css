@@ -2,6 +2,7 @@
 background-image: url('../assets/books-background.jpg');
 height: 93vh;
 padding: 5px;
+margin: 0px;
 }
 
 .add-book-container {

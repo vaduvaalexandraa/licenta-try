@@ -2,10 +2,11 @@ import "./Admin.css";
 import React from "react";
 import { Routes, Route, useNavigate } from 'react-router-dom';
 import { Menu } from "antd";
-import { DashboardOutlined, UserOutlined } from "@ant-design/icons";
+import { DashboardOutlined, UserOutlined, PlusCircleOutlined } from "@ant-design/icons";
 
 import AdminDashboard from "../components/AdminDashboard/AdminDashboard";
 import AdminUsers from "../components/AdminUsers/AdminUsers";
+import AddItem from "./AddItem";
 
 function Admin() {
     const navigate = useNavigate();
@@ -17,7 +18,8 @@ function Admin() {
                 }}
                 items={[
                     { label: "Dashboard", key: "/admin/dashboard", icon: <DashboardOutlined /> },
-                    { label: "Users", key: "/admin/users", icon: <UserOutlined /> }
+                    { label: "Utilizatori", key: "/admin/users", icon: <UserOutlined /> },
+                    { label: "Adauga carte", key: "/admin/addBook", icon: <PlusCircleOutlined />}
                 ]}>
             </Menu>
             <Content />
@@ -30,6 +32,7 @@ function Admin() {
                 <Routes>
                     <Route path="/dashboard" element={<AdminDashboard />} />
                     <Route path="/users" element={<AdminUsers />} />
+                    <Route path="/addBook" element={<AddItem/>}/>
                 </Routes>
             </div>
         );

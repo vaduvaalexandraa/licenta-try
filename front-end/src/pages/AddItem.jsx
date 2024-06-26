@@ -3,7 +3,7 @@ import "./AddItem.css";
 import AddAuthor from "../components/AddAuthor/AddAuthor";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-
+import genuri from "../list-components";
 
 
 function AddItem(){
@@ -24,8 +24,6 @@ function AddItem(){
 
     //de aici incepe partea de carte
 
-   
-
     const [ISBN, setISBN] = useState("");
     const [titlu, setTitlu] = useState("");
     const [genLiterar, setGenLiterar] = useState("");
@@ -35,9 +33,8 @@ function AddItem(){
     const [nrExemplareDisponibile, setNrExemplareDisponibile] = useState("");
     const [image, setPhotos] = useState([]); // State to store the base64 string of the image
     
-    const genuri=["drama","poezie","roman","nuvela","epopee","eseu","jurnal","memorialistica","publicistica","biografie",
-    "autobiografie","corespondenta","critica","teatru","scenariu","fantasy","psihologie","altele","istorie"]
-
+    // const genuri=["drama","poezie","roman","nuvela","epopee","eseu","jurnal","memorialistica","publicistica","biografie",
+    // "autobiografie","corespondenta","critica","teatru","scenariu","fantasy","psihologie","altele","istorie"]
 
 
     const handleSubmit = async (event) => {

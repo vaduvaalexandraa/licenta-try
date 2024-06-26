@@ -61,8 +61,8 @@ function Header() {
             <ul className={menuOpen ? "openMenu" :""}>
                 {idUser ? (
                     <>
-                        <li><NavLink to="/profile">Profile</NavLink></li>
-                        <li onClick={handleLogout}><a href="#">Logout</a></li>
+                        <li><NavLink to="/profile">Profil</NavLink></li>
+                        <li onClick={handleLogout}><a href="#">Deconectare</a></li>
                         {role === 'admin' ? (
                             <li><NavLink to="/admin">Admin</NavLink></li>
                         ) : null}

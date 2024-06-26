@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import './AdminUsers.css';
 
 function AdminUsers() {
   const [users, setUsers] = useState([]);
@@ -35,9 +36,9 @@ function AdminUsers() {
   };
 
   return (
-    <div>
-      <h1>Users</h1>
-      <p>Gestionare utilizatori.</p>
+    <div className='admin-users-container'>
+      <h1>Utilizatori</h1>
+      <br />
 
       <table style={{ width: '100%', borderCollapse: 'collapse', marginTop: '20px' }}>
         <thead>
@@ -53,8 +54,8 @@ function AdminUsers() {
               <td style={{ padding: '10px' }}>{user.firstName} {user.lastName}</td>
               <td style={{ padding: '10px' }}>{user.email}</td>
               <td style={{ padding: '10px', textAlign: 'center' }}>
-                <button onClick={() => handleMakeAdmin(user.id)} style={{ marginRight: '10px' }}>Oferire Admin</button>
-                <button onClick={() => handleRemoveAdmin(user.id)} style={{ marginRight: '10px' }}>Ștergere Admin</button>
+                <button  className="primary" onClick={() => handleMakeAdmin(user.id)} style={{ marginRight: '10px' }}>Oferire Admin</button>
+                <button className= "secondary" onClick={() => handleRemoveAdmin(user.id)} style={{ marginRight: '10px' }}>Ștergere Admin</button>
                 <button onClick={() => handleBanUser(user.id)}>Închide cont</button>
               </td>
             </tr>
