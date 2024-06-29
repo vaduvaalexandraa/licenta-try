@@ -171,10 +171,15 @@ app.post('/imprumuturi', async (req, res) => {
     res.send('Imprumut is created'); 
 });
 
-app.get('/imprumuturi',async (req,res)=>{
-    const imprumuturi=await Imprumut.findAll();
-    res.send(imprumuturi);
-});
+app.get('/imprumuturi', async (req, res) => {
+    try {
+      const imprumuturi = await Imprumut.findAll();
+      res.json(imprumuturi);
+    } catch (error) {
+      res.status(500).json({ error: 'An error occurred while fetching loans' });
+    }
+  });
+  
 
 app.get('/imprumuturi/:idUser',async (req,res)=>{
     const imprumuturi=await Imprumut.findAll({where:{idUser:req.params.idUser}});
