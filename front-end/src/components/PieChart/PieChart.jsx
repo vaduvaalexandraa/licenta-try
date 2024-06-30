@@ -1,8 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Doughnut } from 'react-chartjs-2';
 import axios from 'axios';
-import 'chartjs-plugin-datalabels';
-import * as ChartJS from 'chart.js/auto'; // Folosește 'chart.js/auto' în loc de 'chart.js' pentru a evita problemele de export
+import ChartDataLabels from 'chartjs-plugin-datalabels';
+import Chart from 'chart.js/auto';
+
+// Register the plugin
+Chart.register(ChartDataLabels);
 
 const PieChart = () => {
   const [chartData, setChartData] = useState({
@@ -14,14 +17,17 @@ const PieChart = () => {
         backgroundColor: [],
         borderColor: [],
         borderWidth: 1,
+        percentage: [],
       },
     ],
   });
 
+  const chartRef = useRef(null);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const apiUrl = 'http://localhost:5000/carti'; // Modifică cu URL-ul corect al backend-ului
+        const apiUrl = 'http://localhost:5000/carti';
         const response = await axios.get(apiUrl);
         const carti = response.data;
 
@@ -50,13 +56,11 @@ const PieChart = () => {
         });
 
         const genreNames = Object.keys(genreCounts);
-        const genreData = genreNames.map(gen => {
-          return {
-            genre: gen,
-            count: genreCounts[gen],
-            percentage: parseFloat(genrePercentages[gen]),
-          };
-        });
+        const genreData = genreNames.map(gen => ({
+          genre: gen,
+          count: genreCounts[gen],
+          percentage: parseFloat(genrePercentages[gen]),
+        }));
 
         const backgroundColors = generateColors(genreNames.length);
 
@@ -64,18 +68,18 @@ const PieChart = () => {
           labels: genreData.map(item => item.genre),
           datasets: [
             {
-              label: 'Număr de Cărți pe Gen Literar',
-              data: genreData.map(item => item.count), // Keep the count data
-              percentage: genreData.map(item => item.percentage), // Include percentage data
+              label: `Numarul de carti: `,
+              data: genreData.map(item => item.count),
               backgroundColor: backgroundColors,
               borderColor: backgroundColors,
               borderWidth: 1,
+              percentage: genreData.map(item => item.percentage),
             },
           ],
         });
 
       } catch (error) {
-        console.error('Eroare la preluarea cărților:', error);
+        console.error('Eroare la preluarea cartilor:', error);
       }
     };
 
@@ -90,14 +94,51 @@ const PieChart = () => {
     return colors;
   };
 
+  const handleDownload = () => {
+    const chart = chartRef.current;
+    const canvas = chart.canvas;
+
+    //creare canvas nou
+    const newCanvas = document.createElement('canvas');
+    newCanvas.width = canvas.width;
+    newCanvas.height = canvas.height;
+    const ctx = newCanvas.getContext('2d');
+
+    //setare fundal alb
+    ctx.fillStyle = 'white';
+    ctx.fillRect(0, 0, newCanvas.width, newCanvas.height);
+
+    ctx.drawImage(canvas, 0, 0);
+
+    //descarcare chart
+    const link = document.createElement('a');
+    link.href = newCanvas.toDataURL('image/png');
+    link.download = 'chart.png';
+    link.click();
+  };
+
   const options = {
     plugins: {
+      title: {
+        display: true,
+        text: 'Distributia cartilor pe Gen Literar',
+        font: {
+          size: 20,
+        },
+        padding: {
+          top: 10,
+          bottom: 30,
+        }
+      },
+      legend: {
+        display: true,
+        position: 'bottom',
+      },
       datalabels: {
         formatter: (value, ctx) => {
-          const label = ctx.chart.data.labels[ctx.dataIndex];
-          // Access the percentage data for the current dataIndex
+          const genre = ctx.chart.data.labels[ctx.dataIndex];
           const percentage = ctx.chart.data.datasets[0].percentage[ctx.dataIndex];
-          return `${label}: ${percentage}%`;
+          return [`${genre}`, `${percentage}%`]; //afiseaza genul literar si procentajul
         },
         color: '#6D4C41',
         textAlign: 'center',
@@ -105,26 +146,17 @@ const PieChart = () => {
           weight: 'bold',
           size: 14,
         },
-        anchor: 'end',
-        align: 'start',
-        offset: 15,
-        clamp: true,
-        listeners: {
-          outside: function(context) {
-            const arc = context.chart.chartArea;
-            const offset = (arc.bottom - arc.top) / 2;
-            return {
-              y: arc.top + offset
-            };
-          }
-        }
-      }
-    }
+        anchor: 'center',
+        align: 'center',
+        offset: 0,
+      },
+    },
   };
-  
+
   return (
-    <div style={{ maxWidth: '600px', maxHeight: '600px', margin: '20px' }}>
-      <Doughnut data={chartData} options={options} />
+    <div style={{ width: '400px', height: '400px', margin: '10px' }}>
+      <Doughnut ref={chartRef} data={chartData} options={options} />
+      <button onClick={handleDownload}>Descarca</button>
     </div>
   );
 };

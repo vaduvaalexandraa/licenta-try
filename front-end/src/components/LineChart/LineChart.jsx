@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Line } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from 'chart.js';
 import axios from 'axios';
@@ -19,10 +19,12 @@ const LineChart = () => {
     ],
   });
 
+  const chartRef = useRef(null);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const apiUrl = 'http://localhost:5000/imprumuturi'; // Ensure this is the correct URL
+        const apiUrl = 'http://localhost:5000/imprumuturi'; // Asigură-te că acesta este URL-ul corect
         console.log('API URL:', apiUrl);
 
         const response = await axios.get(apiUrl);
@@ -86,24 +88,75 @@ const LineChart = () => {
     fetchData();
   }, []);
 
+  const handleDownload = () => {
+    const chart = chartRef.current;
+    const canvas = chart.canvas;
+
+    // Create a new canvas with a white background
+    const newCanvas = document.createElement('canvas');
+    newCanvas.width = canvas.width;
+    newCanvas.height = canvas.height;
+    const ctx = newCanvas.getContext('2d');
+
+    // Fill the background with white
+    ctx.fillStyle = 'white';
+    ctx.fillRect(0, 0, newCanvas.width, newCanvas.height);
+
+    // Draw the original chart onto the new canvas
+    ctx.drawImage(canvas, 0, 0);
+
+    // Create a download link
+    const link = document.createElement('a');
+    link.href = newCanvas.toDataURL('image/png');
+    link.download = 'line_chart.png';
+    link.click();
+  };
+
+  const options = {
+    plugins: {
+      title: {
+        display: true,
+        text: 'Numarul de imprumuturi zilnice pe ultimele 7 zile',
+        font: {
+          size: 20,
+        },
+        padding: {
+          top: 10,
+          bottom: 30,
+        }
+      },
+      legend: {
+        display: true,
+        position: 'bottom',
+      },
+      tooltip: {
+        mode: 'index',
+        intersect: false,
+      },
+      datalabels: {
+        display: false, // Ascunde datalabels
+      },
+    },
+    scales: {
+      x: {
+        title: {
+          display: true,
+          text: 'Data',
+        },
+      },
+      y: {
+        title: {
+          display: true,
+          text: 'Nr de imprumuturi zilnice',
+        },
+      },
+    },
+  };
+
   return (
     <div style={{ width: '100%', maxWidth: '800px', height: '500px', margin: '10px' }}>
-      <Line data={chartData} options={{
-        scales: {
-          x: {
-            title: {
-              display: true,
-              text: 'Data',
-            },
-          },
-          y: {
-            title: {
-              display: true,
-              text: 'Numarul de imprumuturi zilnice',
-            },
-          },
-        },
-      }} />
+      <Line ref={chartRef} data={chartData} options={options} />
+      <button onClick={handleDownload}>Descarca</button>
     </div>
   );
 };

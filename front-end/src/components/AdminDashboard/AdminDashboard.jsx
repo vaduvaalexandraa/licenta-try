@@ -7,7 +7,7 @@ function AdminDashboard() {
     <div>
       <h1>Dashboard</h1>
       <div style={{ display: 'flex', justifyContent: 'space-around', flexWrap: 'wrap' }}>
-        <div style={{ maxWidth: '600px', maxHeight: '600px', margin: '20px' }}>
+        <div style={{ maxWidth: '600px', maxHeight: '600px', marginTop:'30px' }}>
           <LineChart />
         </div>
         <div style={{ maxWidth: '600px', maxHeight: '600px', margin: '20px' }}>
