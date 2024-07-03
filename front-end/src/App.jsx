@@ -9,6 +9,8 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import './App.css'
 import Header from './components/Header'
 import Admin from './pages/Admin'
+import Contact from './pages/Contact'
+import EditBook from './components/EditBook/EditBook'
 
 function App() {
 
@@ -24,6 +26,8 @@ function App() {
       <Route path="/addbook" element={<AddItem />} />
       <Route path="/carte/:id" element={<BookPage />} />
       <Route path="/admin/*" element={<Admin />} />
+      <Route path="/contact" element={<Contact />} />
+      <Route path="/editBook" element={<EditBook />} />
     </Routes>
     
     </div>

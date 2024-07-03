@@ -5,7 +5,7 @@ import PieChart from '../PieChart/PieChart';
 function AdminDashboard() {
     return (
     <div>
-      <h1>Dashboard</h1>
+      <h1>Dashboard 📊</h1>
       <div style={{ display: 'flex', justifyContent: 'space-around', flexWrap: 'wrap' }}>
         <div style={{ maxWidth: '600px', maxHeight: '600px', marginTop:'30px' }}>
           <LineChart />

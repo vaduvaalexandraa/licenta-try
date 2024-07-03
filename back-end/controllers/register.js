@@ -1,6 +1,6 @@
 const User = require('../models/User');
 const bcrypt=require('bcrypt');
-const sendMail=require("../functions/mail_confirm");
+const sendMail=require("../functions/mail_confirm.js");
 
 const registerUser=(req,res)=>{
     const {firstName,lastName,studentMark,email,phoneNumber,password}=req.body;

@@ -1,0 +1,118 @@
+.edit-book-container{
+    background-color: rgb(239, 251, 221);
+    margin: 50px auto;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    max-width: 1200px;
+}
+
+.edit-book-container h1 {
+    margin-bottom: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.edit-book-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+    width: 700px;
+    height: 200px;
+    background-color: rgb(255, 255, 255);
+    margin-bottom: 10px;
+}
+
+.edit-book-item .book-image {
+    flex: 0 0 30%; /* Imaginile ocupă 30% din lățimea containerului principal */
+    margin-right: 20px; /* Spațierea dintre imagine și detaliile cărții */
+}
+
+.edit-book-item .book-image img {
+    width: 120px; /* Lățimea imaginii */
+    height: auto; /* Înălțimea automată pentru a menține proporțiile */
+}
+
+.edit-book-item .book-details {
+    flex: 1; /* Detaliile cărții ocupă spațiul rămas */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.edit-book-item .book-details h3 {
+    margin-top: 0;
+    font-weight: bold; /* Textul este îngroșat */
+    font-size: 18px; /* Mărimea fontului */
+}
+
+.edit-book-item .book-details p {
+    margin: 5px 0; /* Spațiere între paragrafe */
+    padding: 4px; /* Spațierea interioară */
+}
+
+.edit-book-item .book-actions button {
+    padding: 10px 15px; /* Spatiere butoane */
+    margin-right: 10px; /* Spatiere intre butoane */
+    cursor: pointer; /* Cursor pointer la hover */
+    font-size: 16px; /* Dimensiunea fontului */
+    border: none; /* Eliminare bordura */
+    border-radius: 5px; /* Colturi rotunjite */
+    outline: none; /* Eliminare contur la focus */
+}
+
+.edit-book-item .book-actions .edit-button {
+    background-color: #4CAF50; /* Fundal verde pentru butonul de editare */
+    color: white; /* Text alb */
+}
+
+.edit-book-item .book-actions .delete-button {
+    background-color: #f44336; /* Fundal rosu pentru butonul de stergere */
+    color: white; /* Text alb */
+}
+
+.edit-button:hover,
+.delete-button:hover {
+    opacity: 0.8; /* Opacitate usor redusa la hover */
+}
+
+.edit-book-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.edit-book-form h3{
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+}
+  
+.edit-book-label {
+font-weight: bold;
+margin-bottom: 5px;
+}
+  
+.edit-book-input,
+.edit-book-textarea {
+    padding: 8px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    resize: vertical; /* Permite redimensionarea verticală pentru textarea */
+}
+
+.edit-book-input {
+    width: 100%;    
+}
+
+.edit-book-textarea {
+    width: 100%;
+    min-height: 100px; /* Înălțime minimă pentru textarea */
+}
+  

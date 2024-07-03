@@ -83,14 +83,16 @@ app.delete('/carti/:id',async (req,res)=>{
     await carte.destroy();
     res.send('book deleted!');});
 
-app.delete('/users/:titlu',async (req,res)=>{
-    const carte=await Carte.findOne({where:{titlu:req.params.titlu}});
-    await carte.destroy();
-    res.send('book deleted!');});
 
 app.put('/carti/:id',async (req,res)=>{
     const carte=await Carte.findOne({where:{id:req.params.id}});
-    carte.nrExemplareDisponibile=req.body.nrExemplareDisponibile;
+    carte.ISBN=req.body.ISBN;
+    carte.titlu=req.body.titlu;
+    carte.genLiterar=req.body.genLiterar;
+    carte.anulPublicarii=req.body.anulPublicarii;
+    carte.numarPagini=req.body.numarPagini;
+    carte.descriere=req.body.descriere;
+    // carte.nrExemplareDisponibile=req.body.nrExemplareDisponibile;
     await carte.save();
     res.send('book updated!');});
     
@@ -256,6 +258,30 @@ app.get('/uploads/:bookId', (req, res) => {
 // app.get("/profile",validateToken, (req,res)=>{
 //     res.json("Profile!");
 // });
+
+//
+const bodyParser = require('body-parser');
+const {sendEmail} = require('./functions/emailSender');
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
+// Endpoint pentru trimiterea email-ului
+app.post('/api/contact', async (req, res) => {
+    const { name, email, subject, message } = req.body;
+
+    // Apelează funcția sendEmail cu datele primite din formular
+    const result = await sendEmail(name, email, subject, message);
+
+    // Returnează răspunsul HTTP în funcție de rezultatul trimiterii emailului
+    if (result.success) {
+        res.status(200).send(result.message);
+    } else {
+        res.status(500).send(result.message);
+    }
+});
+
+
 
 app.listen(5000, () => {
     console.log('Server is running on port 5000');

@@ -1,5 +1,4 @@
 
-
 .admin-users-container {
     max-width: 1200px;
     margin: 50px auto;
@@ -12,7 +11,7 @@
 .admin-users-container h1 {
     text-align: center;
     font-weight: 700;
-    color: #555;
+    color: #000000;
     margin-bottom: 20px;
 }
 
@@ -82,3 +81,15 @@
 .admin-users-container button.secondary:hover {
     background-color: #0984e3;
 }
+
+.admin-users-container button.primary:disabled {
+    background-color: #d3d3d3; /* Light grey background for disabled buttons */
+    color: #999999;           /* Grey text color for disabled buttons */    
+}
+
+.admin-users-container button.secondary:disabled {
+    background-color: #d3d3d3; /* Light grey background for disabled buttons */
+    color: #999999;           /* Grey text color for disabled buttons */
+    
+}
+  

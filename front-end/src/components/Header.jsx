@@ -74,8 +74,8 @@ function Header() {
                         <li><NavLink to="/signup">Sign Up</NavLink></li>
                     </>
                 )}
-                <li><NavLink to="/addBook">Contact</NavLink></li>
-                {/* <li><NavLink to="/">Contact</NavLink></li> */}
+                <li><NavLink to="/contact">Contact</NavLink></li>
+                
             </ul>
         </nav>
     );
