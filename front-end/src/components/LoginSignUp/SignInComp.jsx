@@ -25,44 +25,44 @@ function LoginSignUp() {
         navigate("/signup");
       }
 
-    const loginUser=async(userData)=>{
-        try{
-            const response=await axios.post("http://localhost:5000/login",userData);
-            return response.data;
-        }catch(error){
+      const loginUser = async (userData) => {
+        try {
+            const response = await axios.post("http://localhost:5000/login", userData);
+            return { data: response.data, error: null };
+        } catch (error) {
             console.log(error);
-    }
+            return { data: null, error: error.response ? error.response.data.error : "An error occurred" };
+        }
     };
-
-    const handleLogin=async()=>{
-        try{
-                if(document.querySelector("input[placeholder='Email']").value!==""&&
-                document.querySelector("input[placeholder='Password']").value!==""){
-                    const email=document.querySelector("input[placeholder='Email']").value;
-                    const password=document.querySelector("input[placeholder='Password']").value;
-                    const userData={email,password};
-                    const response=await loginUser(userData);
-                    console.log(response);
-                    document.querySelector("input[placeholder='Email']").value="";
-                    document.querySelector("input[placeholder='Password']").value="";
-
-                    if(response.message ==="Logged in!"){
-                        //adaugat nou, am modificat din response in response.message
-                        sessionStorage.setItem("userId",response.userId);
-                        window.alert("You have successfully logged in!");
-                        goToHomePage();
-                        
-                    }else{
-                        window.alert("Invalid credentials!");
-                    }
-
-            }else{
+    
+    const handleLogin = async () => {
+        try {
+            if (document.querySelector("input[placeholder='Email']").value !== "" &&
+                document.querySelector("input[placeholder='Password']").value !== "") {
+                const email = document.querySelector("input[placeholder='Email']").value;
+                const password = document.querySelector("input[placeholder='Password']").value;
+                const userData = { email, password };
+                const { data, error } = await loginUser(userData);
+    
+                document.querySelector("input[placeholder='Email']").value = "";
+                document.querySelector("input[placeholder='Password']").value = "";
+    
+                if (error) {
+                    window.alert(error); // Display error message
+                } else if (data && data.message === "Logged in!") {
+                    sessionStorage.setItem("userId", data.userId);
+                    window.alert("You have successfully logged in!");
+                    goToHomePage();
+                } else {
+                    window.alert("Invalid credentials!");
+                }
+            } else {
                 alert("Please fill all the fields!");
             }
-        
-        }catch(error){
-            console.log(error);}
-    }
+        } catch (error) {
+            console.log(error);
+        }
+    };
     
 
     return(

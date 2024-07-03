@@ -4,32 +4,31 @@ const cookieParser = require('cookie-parser');
 // app.use(cookieParser());
 const{createToken, validateToken}=require('../middleware/JWT');
 
-const loginUser=async (req,res)=>{
-    const{email,password}=req.body;
+const loginUser = async (req, res) => {
+    const { email, password } = req.body;
 
-    const user=await User.findOne({where:{email:email}});
+    const user = await User.findOne({ where: { email: email } });
 
-    if(!user){
-        res.status(400).json({error:"User doesn't exist!"});
+    // Check if user exists before trying to access its properties
+    if (!user) {
+        return res.status(400).json({ error: "User doesn't exist!" });
     }
-    const dbPassword=user.password;
-    bcrypt.compare(password,dbPassword).then((match)=>{
-        if(!match){
-            res.status(400).json({error:"Wrong email or password!"});
-        }
-        else {
-            const accessToken=createToken(user);
-            res.cookie("access-token",accessToken,{
-                maxAge:60*60*24*30*1000,
-                httpOnly:true,
-                
+
+    const dbPassword = user.password;
+    bcrypt.compare(password, dbPassword).then((match) => {
+        if (!match) {
+            return res.status(400).json({ error: "Wrong email or password!" });
+        } else {
+            const accessToken = createToken(user);
+            res.cookie("access-token", accessToken, {
+                maxAge: 60 * 60 * 24 * 30 * 1000,
+                httpOnly: true,
             });
-            //modificat, am pus si userId pentru a trimite id-ul persoanei logate
-            res.json({ message: "Logged in!", userId: user.id });}
-            
-            
+            // Modified, added userId to send the logged-in user's ID
+            return res.json({ message: "Logged in!", userId: user.id });
+        }
     });
-    
 };
+    
 
 module.exports={loginUser};
