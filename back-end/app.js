@@ -92,7 +92,12 @@ app.put('/carti/:id',async (req,res)=>{
     carte.anulPublicarii=req.body.anulPublicarii;
     carte.numarPagini=req.body.numarPagini;
     carte.descriere=req.body.descriere;
-    // carte.nrExemplareDisponibile=req.body.nrExemplareDisponibile;
+    await carte.save();
+    res.send('book updated!');});
+
+app.put('/carti/exemplare/:id',async (req,res)=>{
+    const carte=await Carte.findOne({where:{id:req.params.id}});
+    carte.nrExemplareDisponibile=req.body.nrExemplareDisponibile;
     await carte.save();
     res.send('book updated!');});
     

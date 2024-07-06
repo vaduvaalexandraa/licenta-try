@@ -218,6 +218,38 @@
     background-color: #3367d6; 
 }
 
+.button_lend:disabled {
+    display: inline-flex;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: gray;
+    color: #fff;
+    border: none;
+    border-radius: 20px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    content: 'Nu sunt exemplare disponibile';
+}
+
+.button_lend:disabled:hover::after {
+    content: 'Nu sunt exemplare disponibile';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    background-color: rgba(0, 0, 0, 0.75); 
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 20px;
+}
+
+
 .button-book .title-lending{
     margin-bottom: 5px;
     font-size: 1.5rem;

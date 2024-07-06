@@ -22,6 +22,7 @@ function BookPage() {
     const [imagesCarte, setImagesCarte] = useState([]);
     const [slide, setSlide] = useState(0);
     const[buttonPopup,setButtonPopup]=useState(false);
+    const [isBorrowDisabled, setIsBorrowDisabled] = useState(false);
     const scrollRef = useRef(null); 
 
     useEffect(() => {
@@ -33,6 +34,7 @@ function BookPage() {
         try {
             const response = await axios.get(`http://localhost:5000/carti/find/${id}`);
             setCarte(response.data);
+            setIsBorrowDisabled(response.data.nrExemplareDisponibile <= 0);
             fetchAutorCarte(response.data.idAutor); // Fetch author based on book's author ID
             
             if(Array.isArray(response.data.imagineCarte)) {
@@ -127,7 +129,23 @@ function BookPage() {
                 dataRestituire: returnDate.toISOString().split('T')[0] // Salvează doar data fără ora
             });
     
-            window.alert("Cartea a fost împrumutată!");
+            if (response.data.message === 'No copies available') {
+                window.alert('No copies available for borrowing!');
+                setIsBorrowDisabled(true);
+            } else {
+                window.alert("Cartea a fost împrumutată!");
+    
+                // Update the number of available copies
+                await axios.put(`http://localhost:5000/carti/exemplare/${id}`, {
+                    nrExemplareDisponibile: carte.nrExemplareDisponibile - 1
+                });
+    
+                setIsBorrowDisabled(carte.nrExemplareDisponibile - 1 <= 0);
+                setCarte(prevState => ({
+                    ...prevState,
+                    nrExemplareDisponibile: prevState.nrExemplareDisponibile - 1
+                }));
+            }
         } catch (error) {
             console.error('Error adding to borrow list:', error);
         }
@@ -138,52 +156,52 @@ function BookPage() {
 
     return (
         <div className="big-div">
-        <div className="book-details">
-            <div className="carousel-container">
-            <div className="carousel">
-                <BsArrowLeftCircleFill className="arrow arrow-left" onClick={prevSlide}/>
-                {imagesCarte.map((image, index) => ( <img key={index} src={image} alt="book" 
-                className={slide === index ?"slide":"slide slide-hidden"} /> ))} 
-                <BsArrowRightCircleFill className="arrow arrow-right" onClick={nextSlide}/>
-                <span className="indicators">
-                    {imagesCarte.map((_,index)=>{
-                        return <button key={index} onClick={()=>setSlide(index)} 
-                        className={slide===index?"indicator":"indicator indicator-inactive"}></button>
-                    })}
-                </span>
-            </div>
-            </div>
-            
-            <div className="details-container">
-                <div className="specific-book-details">
-                    <h1>{carte.titlu}</h1>
-                    <h2>Autor: {autorCarte.nume} {autorCarte.prenume}</h2>
-                    <Rating className="rating-book"
-                        // initialRating={3}
-                        readonly/>
-                    <h3>DESCRIERE</h3>
-                    <div className="book-description">
-                        {carte.descriere && carte.descriere.split('.').map((sentence, index, array) => (
-                            <div key={index} className="description-sentence">{sentence.trim()}{index !== array.length - 1 && '.'}</div>
-                        ))}
+            <div className="book-details">
+                <div className="carousel-container">
+                    <div className="carousel">
+                        <BsArrowLeftCircleFill className="arrow arrow-left" onClick={prevSlide}/>
+                        {imagesCarte.map((image, index) => ( 
+                            <img key={index} src={image} alt="book" className={slide === index ? "slide" : "slide slide-hidden"} /> 
+                        ))} 
+                        <BsArrowRightCircleFill className="arrow arrow-right" onClick={nextSlide}/>
+                        <span className="indicators">
+                            {imagesCarte.map((_, index) => (
+                                <button key={index} onClick={() => setSlide(index)} 
+                                    className={slide === index ? "indicator" : "indicator indicator-inactive"}>
+                                </button>
+                            ))}
+                        </span>
+                    </div>
+                </div>
+                
+                <div className="details-container">
+                    <div className="specific-book-details">
+                        <h1>{carte.titlu}</h1>
+                        <h2>Autor: {autorCarte.nume} {autorCarte.prenume}</h2>
+                        <Rating className="rating-book" readonly/>
+                        <h3>DESCRIERE</h3>
+                        <div className="book-description">
+                            {carte.descriere && carte.descriere.split('.').map((sentence, index, array) => (
+                                <div key={index} className="description-sentence">{sentence.trim()}{index !== array.length - 1 && '.'}</div>
+                            ))}
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        
-        <div className="emoji-div">
+            
+            <div className="emoji-div">
                 <div className="input-emoji">
                     <img src={pages_icon} alt="pages" className="emoji"/>
                     <div>PAGINI</div>
                     <div className="emoji-text">{carte.numarPagini}</div>
                 </div>
                 <div className="input-emoji">
-                    <img src={year_icon } alt="year" className="emoji"/>
+                    <img src={year_icon} alt="year" className="emoji"/>
                     <div>AN APARITIE</div>
                     <div className="emoji-text">{carte.anulPublicarii}</div>
                 </div>
                 <div className="input-emoji">
-                    <img src={isbn_icon } alt="isbn" className="emoji"/>
+                    <img src={isbn_icon} alt="isbn" className="emoji"/>
                     <div>ISBN</div>
                     <div className="emoji-text">{carte.ISBN}</div>
                 </div>
@@ -191,26 +209,26 @@ function BookPage() {
                     <img src={genre_icon} alt="genre" className="emoji"/>
                     <div>GEN</div>
                     <div className="emoji-text">{carte.genLiterar}</div>
+                </div>
             </div>
-                
-   
-        </div>
-        <div className="button-book">
-                <button className="button_lend" onClick={addToBorrowList}>IMPRUMUTA</button>
+            
+            <div className="button-book">
+                <button className="button_lend" onClick={addToBorrowList} disabled={isBorrowDisabled}>IMPRUMUTA</button>
                 <button className="button_wishlist" onClick={addToWishlist}> WISHLIST</button>
                 <PopUp trigger={buttonPopup} setTrigger={setButtonPopup} handleConfirm={handleConfirm}>
                     <h3 className="title-lending">Doresti sa plasezi imprumutul?</h3>
                     <p>Locatia de unde va fi disponibil pentru ridicat este: ASE, CSIE </p>
                     <div className="gmap-frame">
-                        <iframe width="320" height="300" frameBorder="0" scrolling="no" marginHeight="0" marginWidth="0" src="https://maps.google.com/maps?width=320&amp;height=300&amp;hl=en&amp;q=Academia%20de%20Studii%20Economice,%20Cl%C4%83direa%20Virgil%20Madgearu,%20Calea%20Doroban%C8%9Bi%2015-17,%20Bucure%C8%99ti%20010552+(My%20Business%20Name)&amp;t=p&amp;z=19&amp;ie=UTF8&amp;iwloc=B&amp;output=embed"><a href="https://www.gps.ie/">gps vehicle tracker</a></iframe>
+                        <iframe width="320" height="300" frameBorder="0" scrolling="no" marginHeight="0" marginWidth="0" 
+                            src="https://maps.google.com/maps?width=320&amp;height=300&amp;hl=en&amp;q=Academia%20de%20Studii%20Economice,%20Cl%C4%83direa%20Virgil%20Madgearu,%20Calea%20Doroban%C8%9Bi%2015-17,%20Bucure%C8%99ti%20010552+(My%20Business%20Name)&amp;t=p&amp;z=19&amp;ie=UTF8&amp;iwloc=B&amp;output=embed">
+                        </iframe>
                     </div>
                     <p>Termenul de returnare este: {returnDate.toLocaleDateString()}</p>
                 </PopUp>
             </div>
         </div>
-       
-        
     );
+    
 }
 
 export default BookPage;
