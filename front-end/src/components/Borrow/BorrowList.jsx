@@ -11,6 +11,8 @@ function BorrowList({ idUser }) {
 
     const [showReturnPopup, setShowReturnPopup] = useState(false);
     const [borrowToReturn, setBorrowToReturn] = useState(null);
+    const [reviewText, setReviewText] = useState('');
+    const [ratingValue, setRatingValue] = useState(0);
 
     useEffect(() => {
         getBorrows();
@@ -39,7 +41,8 @@ function BorrowList({ idUser }) {
                     borrowStartDate: borrow.dataImprumut,
                     daysLeft: daysLeft,
                     idImprumut: borrow.id, 
-                    canExtend: daysBorrowed < 21 // putem sa prelungim
+                    canExtend: daysBorrowed < 21, // putem să prelungim
+                    status: borrow.status
                 };
             }));
             setBorrowsDetails(booksDetails);
@@ -78,7 +81,49 @@ function BorrowList({ idUser }) {
 
     const showReturnForm = (borrow) => {
         setBorrowToReturn(borrow);
+        setRatingValue(0); // Reset rating value when opening the return popup
         setShowReturnPopup(true);
+    };
+
+    const handleReviewSubmission = async () => {
+        try {
+            console.log('Rating Value before submission:', ratingValue); // Log the rating value
+            const reviewData = {
+                idUser: idUser,
+                idBook: borrowToReturn.id,
+                review: reviewText,
+                rating: ratingValue
+            };
+            console.log('Review Data being submitted:', reviewData);
+            //SALVARE REVIEW
+            await axios.post('http://localhost:5000/reviews', reviewData);
+    
+            //STATUS CARTE "RETURNED"
+            await axios.put(`http://localhost:5000/imprumuturi/status/${borrowToReturn.idImprumut}`, { status: 'returned' });
+
+            //MODIFICARE NR DE CARTI DISPONIBILE
+            const bookResponse = await axios.get(`http://localhost:5000/carti/find/${borrowToReturn.id}`);
+            let nrExemplareDisponibile = bookResponse.data.nrExemplareDisponibile;
+            nrExemplareDisponibile += 1;
+            await axios.put(`http://localhost:5000/carti/exemplare/${borrowToReturn.id}`, { nrExemplareDisponibile });
+            
+            //REFRESH 
+            getBorrows();
+    
+            //INCHIDERE POPUP + RESETARE VARIABILE
+            setShowReturnPopup(false);
+            setBorrowToReturn(null);
+            setReviewText('');
+            setRatingValue(0); 
+    
+        } catch (error) {
+            console.error('Error saving review or updating status:', error);
+        }
+    };
+    
+    const handleRatingClick = (value) => {
+        console.log('Selected Rating:', value); // Log the selected rating value
+        setRatingValue(value); // Update rating value on star click
     };
 
     return (
@@ -87,56 +132,65 @@ function BorrowList({ idUser }) {
             {borrowsSpecificDetails.length === 0 ? (
                 <p>Nu există împrumuturi disponibile.</p>
             ) : (
-                borrowsSpecificDetails.map(book => (
-                    <div className='book-item' key={book.idImprumut}>
-                        <div className='book-image'>
-                            <img src={`http://localhost:5000/uploads/${book.imagineCarte[0]}`} alt="book" style={{ width: '100px' }} />
-                        </div>
-                        <div className='book-details-wishlist'>
-                            <p>{book.titlu}</p>
-                            <p>Autor: {book.authorName}</p>
-                            <p>Data restituire: {
-                                (() => {
-                                    const date = new Date(book.returnData);
-                                    const day = date.getDate();
-                                    const month = date.getMonth() + 1;
-                                    const year = date.getFullYear();
-                                    return `${day < 10 ? `0${day}` : day}/${month < 10 ? `0${month}` : month}/${year}`;
-                                })()
-                            }</p>
-                            <p className="daysleft-p">Au mai rămas <span className={book.daysLeft < 5 ? 'red-text' : 'blue-text'}>{book.daysLeft} </span> zile până la data returului!</p>
-                            <div className="borrow-buttons-container">
-                                <button 
-                                    className="extend-term-button" 
-                                    onClick={() => extendBorrow(book)}
-                                    disabled={!book.canExtend}
-                                    style={{ backgroundColor: !book.canExtend ? 'grey' : '' }}
-                                >
-                                    Prelungeste
-                                </button>
-                                <PopUpPrelungire trigger={buttonExtendPopup} setTrigger={setButtonExtendPopup}>
-                                    <h3>Doriți să prelungiți împrumutul?</h3>
-                                    <h4 className='extend-h4'>Imprumutul se poate prelungi cu 7 zile, o singura data!</h4>
-                                    <div className="buttons-prel">
-                                        <button className='extend-btn-borrow' onClick={extendDaysBorrow}>Prelungeste!</button>
-                                        <button className='cancel-btn-borrow' onClick={() => setButtonExtendPopup(false)}>Anuleaza!</button>
-                                    </div>
-                                </PopUpPrelungire>
-                                <button className="return-button" onClick={() => showReturnForm(book)}>Restituie</button>
-                                <PopUpPrelungire trigger={showReturnPopup} setTrigger={setShowReturnPopup}>
-                                    <div className="return-popup">
-                                    <h3>Doriți să restituiți cartea?</h3>
-                                    <h4 className='return-h4'>Ofera un numar de stele bazat pe experienta avuta!⭐</h4>
-                                    <Rating className='give-rating' ratingValue={0} stars={5} />
-                                    <h4 className='return-h4'>Cum ti s-a parut cartea? Ofera un review: 📝</h4>
-                                    <textarea placeholder="Adauga un review"  />
-                                    <button className='return-btn-borrow' onClick={() => setShowReturnPopup(false)}>Restituie!</button>
-                                    </div>
-                                </PopUpPrelungire>
+                // Sort loans: active first, then returned
+                borrowsSpecificDetails
+                    .sort((a, b) => (a.status === 'returned' ? 1 : -1))
+                    .map(book => (
+                        <div className='book-item' key={book.idImprumut} style={{ backgroundColor: book.status === 'returned' ? '#f0f0f0' : '' }}>
+                            <div className='book-image'>
+                                <img src={`http://localhost:5000/uploads/${book.imagineCarte[0]}`} alt="book" style={{ width: '100px' }} />
+                            </div>
+                            <div className='book-details-wishlist'>
+                                <p>{book.titlu}</p>
+                                <p>Autor: {book.authorName}</p>
+                                <p>Data restituire: {
+                                    (() => {
+                                        const date = new Date(book.returnData);
+                                        const day = date.getDate();
+                                        const month = date.getMonth() + 1;
+                                        const year = date.getFullYear();
+                                        return `${day < 10 ? `0${day}` : day}/${month < 10 ? `0${month}` : month}/${year}`;
+                                    })()
+                                }</p>
+                                {book.status !== 'returned' && (
+                                    <p className="daysleft-p">Au mai rămas <span className={book.daysLeft < 5 ? 'red-text' : 'blue-text'}>{book.daysLeft} </span> zile până la data returului!</p>
+                                )}
+                                <div className="borrow-buttons-container">
+                                    {book.status !== 'returned' && (
+                                        <>
+                                            <button 
+                                                className="extend-term-button" 
+                                                onClick={() => extendBorrow(book)}
+                                                disabled={!book.canExtend}
+                                                style={{ backgroundColor: !book.canExtend ? 'grey' : '' }}
+                                            >
+                                                Prelungeste
+                                            </button>
+                                            <PopUpPrelungire trigger={buttonExtendPopup} setTrigger={setButtonExtendPopup}>
+                                                <h3>Doriți să prelungiți împrumutul?</h3>
+                                                <h4 className='extend-h4'>Imprumutul se poate prelungi cu 7 zile, o singura data!</h4>
+                                                <div className="buttons-prel">
+                                                    <button className='extend-btn-borrow' onClick={extendDaysBorrow}>Prelungeste!</button>
+                                                    <button className='cancel-btn-borrow' onClick={() => setButtonExtendPopup(false)}>Anuleaza!</button>
+                                                </div>
+                                            </PopUpPrelungire>
+                                            <button className="return-button" onClick={() => showReturnForm(book)}>Restituie</button>
+                                            <PopUpPrelungire trigger={showReturnPopup} setTrigger={setShowReturnPopup}>
+                                                <div className="return-popup">
+                                                    <h3>Doriți să restituiți cartea?</h3>
+                                                    <h4 className='return-h4'>Ofera un numar de stele bazat pe experienta avuta!⭐</h4>
+                                                    <Rating className='give-rating' ratingValue={ratingValue} stars={5} onClick={handleRatingClick} />
+                                                    <h4 className='return-h4'>Cum ți s-a părut cartea? Oferă un review: 📝</h4>
+                                                    <textarea placeholder="Adaugă un review" value={reviewText} onChange={(e) => setReviewText(e.target.value)} />
+                                                    <button className='return-btn-borrow' onClick={handleReviewSubmission}>Restituie!</button>
+                                                </div>
+                                            </PopUpPrelungire>
+                                        </>
+                                    )}
+                                </div>
                             </div>
                         </div>
-                    </div>
-                ))
+                    ))
             )}
         </div>
     );
