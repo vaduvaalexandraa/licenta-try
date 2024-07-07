@@ -116,7 +116,7 @@ function BorrowList({ idUser }) {
                                 </button>
                                 <PopUpPrelungire trigger={buttonExtendPopup} setTrigger={setButtonExtendPopup}>
                                     <h3>Doriți să prelungiți împrumutul?</h3>
-                                    <h4>Imprumutul se poate prelungi cu 7 zile, o singura data!</h4>
+                                    <h4 className='extend-h4'>Imprumutul se poate prelungi cu 7 zile, o singura data!</h4>
                                     <div className="buttons-prel">
                                         <button className='extend-btn-borrow' onClick={extendDaysBorrow}>Prelungeste!</button>
                                         <button className='cancel-btn-borrow' onClick={() => setButtonExtendPopup(false)}>Anuleaza!</button>
@@ -124,12 +124,13 @@ function BorrowList({ idUser }) {
                                 </PopUpPrelungire>
                                 <button className="return-button" onClick={() => showReturnForm(book)}>Restituie</button>
                                 <PopUpPrelungire trigger={showReturnPopup} setTrigger={setShowReturnPopup}>
+                                    <div className="return-popup">
                                     <h3>Doriți să restituiți cartea?</h3>
-                                    <Rating ratingValue={0} stars={5} />
+                                    <h4 className='return-h4'>Ofera un numar de stele bazat pe experienta avuta!⭐</h4>
+                                    <Rating className='give-rating' ratingValue={0} stars={5} />
+                                    <h4 className='return-h4'>Cum ti s-a parut cartea? Ofera un review: 📝</h4>
                                     <textarea placeholder="Adauga un review"  />
-                                    <div className="buttons-prel">
-                                        <button className='extend-btn-borrow' onClick={() => setShowReturnPopup(false)}>Restituie!</button>
-                                        <button className='cancel-btn-borrow' onClick={() => setShowReturnPopup(false)}>Anuleaza!</button>
+                                    <button className='return-btn-borrow' onClick={() => setShowReturnPopup(false)}>Restituie!</button>
                                     </div>
                                 </PopUpPrelungire>
                             </div>

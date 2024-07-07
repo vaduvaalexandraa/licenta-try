@@ -6,6 +6,7 @@ const Carte=require('./models/Carte');
 const Autor=require('./models/Autor');
 const Wishlist=require('./models/Wishlist');
 const Imprumut=require('./models/Imprumut');
+const Review=require('./models/Review');
 
 app.use(express.json()); 
 const cors=require('cors');
@@ -42,6 +43,13 @@ app.put('/users/:id',async (req,res)=>{
     user.phoneNumber=req.body.phoneNumber;
     await user.save();
     res.send('user phone number is updated!')
+});
+
+app.put('/users/status/:id',async (req,res)=>{
+    const user=await User.findOne({where:{id:req.params.id}});
+    user.status=req.body.status;
+    await user.save();
+    res.send('user status is updated!')
 });
 
 app.delete('/users/:id',async (req,res)=>{
@@ -221,6 +229,42 @@ app.put('/imprumuturi/:idImprumut', async (req, res) => {
     imprumut.dataRestituire = req.body.dataRestituire;
     await imprumut.save();
     res.send('Imprumut updated!');
+});
+
+app.put('/imprumuturi/status/:idImprumut', async (req, res) => {
+    const imprumut = await Imprumut.findOne({
+        where: { id: req.params.idImprumut }
+    });
+    imprumut.status = req.body.status;
+    await imprumut.save();
+    res.send('Imprumut status updated!');
+});
+
+
+// REVIEW
+
+app.post('/reviews', async (req, res) => {
+    await Review.create(req.body)
+    res.send('Review is created'); 
+});
+
+app.get('/reviews', async (req, res) => {
+    try {
+      const reviews = await Review.findAll();
+      res.json(reviews);
+    } catch (error) {
+      res.status(500).json({ error: 'An error occurred while fetching reviews' });
+    }
+});
+
+app.get('/reviews/:idUser',async (req,res)=>{
+    const reviews=await Review.findAll({where:{idUser:req.params.idUser}});
+    res.send(reviews);
+});
+
+app.get('/reviews/:idBook',async (req,res)=>{
+    const reviews=await Review.findAll({where:{idBook:req.params.idBook}});
+    res.send(reviews);
 });
 
 ///Login IN

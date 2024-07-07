@@ -18,6 +18,11 @@ Imprumut.init({
     dataRestituire:{
         type:DataTypes.DATE,
         allowNull:false
+    },
+    status:{
+        type:DataTypes.STRING,
+        allowNull:false,
+        defaultValue:'borrowed'
     }
     }
     ,{

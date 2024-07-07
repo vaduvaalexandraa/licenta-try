@@ -10,7 +10,7 @@ function AddItem(){
     const navigate = useNavigate()
 
     const goToHome=()=>{
-        navigate("/");
+        navigate("/home");
     }
     const[step, setStep]=useState(1);
 
