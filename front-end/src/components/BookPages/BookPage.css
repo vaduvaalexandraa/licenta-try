@@ -289,3 +289,35 @@
     margin-left: 15px; 
     font-size: 1rem; 
 }
+
+.reviews-count:hover {
+    cursor: pointer; /* Transformă cursorul în pointer la hover */
+    text-decoration: underline; /* Adaugă subliniere la hover */
+}
+
+.reviews-count {
+    color: #007bff; /* Schimbă culoarea textului */
+    cursor: pointer; /* Transformă cursorul în pointer */
+}
+
+.list-review li{
+    list-style-type: none;
+    margin-top: 20px;
+    margin-left: 40px;
+    margin-right: 40px;
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 5px #666;
+}
+
+.review-title {
+    font-size: 25px;
+    font-weight: bold;
+    text-align: center; /* Center text horizontally */
+    margin: 0 auto; /* Center the element horizontally */
+}
+
+.list-review .review-header p{
+    margin:10px;
+    
+}

@@ -11,6 +11,7 @@ import { Rating } from 'react-simple-star-rating';
 import { UserContext } from "../../Context/UserContext";
 import { useContext } from "react";
 import PopUp from "../PopUp/PopUp";
+import PopUpPrelungire from "../PopUpPrelungire/PopUpPrelungire";
 
 function BookPage() {
     const storedUserId = sessionStorage.getItem('userId');
@@ -24,6 +25,8 @@ function BookPage() {
     const scrollRef = useRef(null);
     const [rating, setRating] = useState(0); // State pentru rating
     const [reviewsLength, setReviewsLength] = useState(0); // State pentru numărul de review-uri
+    const [showReviewsPopup, setShowReviewsPopup] = useState(false);
+    const [reviews, setReviews] = useState([]);
 
     useEffect(() => {
         fetchSpecificBook();
@@ -34,18 +37,25 @@ function BookPage() {
     const fetchReviews = async () => {
         try {
             const response = await axios.get(`http://localhost:5000/reviews/book/${id}`);
-            const reviews = response.data;
-            setReviewsLength(reviews.length); // Setează numărul de review-uri
-            if (reviews.length > 0) {
-                const averageRating = reviews.reduce((acc, curr) => acc + curr.rating, 0) / reviews.length;
-                setRating(averageRating); // Setează rating-ul exact cum este calculat
-            } else {
-                setRating(0); // Setează rating-ul la 0 în cazul în care nu există review-uri
-            }
+            const reviewsWithUserData = response.data.map(async review => {
+                const userDataResponse = await axios.get(`http://localhost:5000/users/${review.idUser}`);
+                return {
+                    ...review,
+                    userData: userDataResponse.data
+                };
+            });
+    
+            const reviewsWithData = await Promise.all(reviewsWithUserData);
+            setReviews(reviewsWithData);
+    
+            const averageRating = reviewsWithData.reduce((acc, curr) => acc + curr.rating, 0) / reviewsWithData.length;
+            setRating(averageRating);
+            setReviewsLength(reviewsWithData.length);
         } catch (error) {
             console.error('Error fetching reviews:', error);
         }
     };
+    
     
     
 
@@ -182,7 +192,23 @@ function BookPage() {
                         <h2>Autor: {autorCarte.nume} {autorCarte.prenume}</h2>
                         <div className="rating-and-reviews">
                             <Rating className="rating-book" initialValue={rating} stars={5} readonly/>
-                            <p>({reviewsLength}) review-uri</p>
+                            <p className="reviews-count" onClick={() => setShowReviewsPopup(true)}> ({reviewsLength}) review-uri</p>
+                            <PopUpPrelungire trigger={showReviewsPopup} setTrigger={setShowReviewsPopup}>
+                            <h3 className="review-title">Review-uri</h3>
+                            <ul className="list-review">
+                                {reviews.map((review, index) => (
+                                    <li key={index}>
+                                        <div className="review-header">
+                                            
+                                            <Rating className="rating-book" initialValue={review.rating} stars={5} readonly/>
+                                            <p><strong>👤User:</strong> <em>{review.userData.lastName} {review.userData.firstName}</em></p>
+                                            <p><strong>🖊️Recenzie:</strong> {review.review}</p>
+                                        </div>
+                                    </li>
+                                ))}
+                            </ul>
+                             </PopUpPrelungire>
+
                         </div>
                         <h3>DESCRIERE</h3>
                         <div className="book-description">
