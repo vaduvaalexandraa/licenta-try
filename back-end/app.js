@@ -262,7 +262,7 @@ app.get('/reviews/:idUser',async (req,res)=>{
     res.send(reviews);
 });
 
-app.get('/reviews/:idBook',async (req,res)=>{
+app.get('/reviews/book/:idBook',async (req,res)=>{
     const reviews=await Review.findAll({where:{idBook:req.params.idBook}});
     res.send(reviews);
 });

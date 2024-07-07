@@ -279,3 +279,13 @@
 }
 
   
+.rating-and-reviews {
+    display: flex;
+    align-items: center;
+    margin-left: 37px; /* sau ajustați la dvs. pentru a alinia corect */
+}
+
+.rating-and-reviews p {
+    margin-left: 15px; 
+    font-size: 1rem; 
+}
