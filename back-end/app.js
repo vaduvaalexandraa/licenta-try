@@ -232,13 +232,19 @@ app.put('/imprumuturi/:idImprumut', async (req, res) => {
 });
 
 app.put('/imprumuturi/status/:idImprumut', async (req, res) => {
-    const imprumut = await Imprumut.findOne({
-        where: { id: req.params.idImprumut }
-    });
-    imprumut.status = req.body.status;
-    await imprumut.save();
-    res.send('Imprumut status updated!');
+    try {
+        const imprumut = await Imprumut.findOne({
+            where: { id: req.params.idImprumut }
+        });
+        imprumut.status = req.body.status;
+        imprumut.dataRestituire = req.body.dataRestituire;
+        await imprumut.save();
+        res.send('Imprumut updated!');
+    } catch (error) {
+        res.status(500).send('Error updating imprumut: ' + error.message);
+    }
 });
+
 
 
 // REVIEW

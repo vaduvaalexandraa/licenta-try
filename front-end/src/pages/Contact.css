@@ -1,0 +1,87 @@
+.contact-header{
+    margin: 0 auto;
+    text-align: center;
+    padding: 20px;
+    color: rgb(41, 40, 41);
+}
+
+.contact-text {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 20px;
+  }
+
+
+.contact-form {
+    max-width: 600px;
+    margin: 0 auto;
+    margin-top: 60px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+  }
+  
+  /* Styling form elements */
+  .contact-form div {
+    margin-bottom: 15px;
+  }
+  
+  .contact-form-label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+  
+  .contact-form-input,
+  .contact-form-textarea {
+    width: calc(100% - 22px); /* Account for padding */
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    font-size: 16px;
+    box-sizing: border-box;
+  }
+  
+  /* Styling textarea specifically */
+  .contact-form-textarea {
+    height: 100px;
+    resize: vertical; /* Allow vertical resizing */
+  }
+  
+  /* Styling the submit button */
+  .send-contact-form-btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #4CAF50;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    display: block;
+    margin: 0 auto; /* Center the button */
+  }
+  
+ .send-contact-form-btn:hover {
+    background-color: #45a049;
+  }
+  
+  /* Conditional styling for input validation */
+  .contact-form-input:invalid,
+  .contact-form-textarea:invalid {
+    border-color: red;
+  }
+  
+  .contact-form-input:valid,
+  .contact-form-textarea:valid {
+    border-color: green;
+  }
+  
+  /* Success message styling */
+.success-message {
+    color: green;
+    font-size: 16px;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  

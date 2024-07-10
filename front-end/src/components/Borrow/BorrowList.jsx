@@ -98,15 +98,19 @@ function BorrowList({ idUser }) {
             //SALVARE REVIEW
             await axios.post('http://localhost:5000/reviews', reviewData);
     
+            // Set the new return date to the current date
+            const currentDate = new Date();
+            const newReturnDate = currentDate.toISOString(); // Format the date as needed
+    
             //STATUS CARTE "RETURNED"
-            await axios.put(`http://localhost:5000/imprumuturi/status/${borrowToReturn.idImprumut}`, { status: 'returned' });
-
+            await axios.put(`http://localhost:5000/imprumuturi/status/${borrowToReturn.idImprumut}`, { status: 'returned', dataRestituire: newReturnDate });
+    
             //MODIFICARE NR DE CARTI DISPONIBILE
             const bookResponse = await axios.get(`http://localhost:5000/carti/find/${borrowToReturn.id}`);
             let nrExemplareDisponibile = bookResponse.data.nrExemplareDisponibile;
             nrExemplareDisponibile += 1;
             await axios.put(`http://localhost:5000/carti/exemplare/${borrowToReturn.id}`, { nrExemplareDisponibile });
-            
+    
             //REFRESH 
             getBorrows();
     
@@ -114,12 +118,13 @@ function BorrowList({ idUser }) {
             setShowReturnPopup(false);
             setBorrowToReturn(null);
             setReviewText('');
-            setRatingValue(0); 
+            setRatingValue(0);
     
         } catch (error) {
             console.error('Error saving review or updating status:', error);
         }
     };
+    
     
     const handleRatingClick = (value) => {
         console.log('Selected Rating:', value); // Log the selected rating value
