@@ -14,7 +14,7 @@ const sendEmail = async (name, email, subject, message) => {
         from: `${name} <${email}>`, // Adresa de email va fi afișată ca "Nume <email>"
         to: 'readwithmelicenta@gmail.com', // Adresa destinatară
         subject: subject,
-        text: `${name} (${email}) says: ${message}`
+        text: `${name} (${email}) a transmis urmatorul mesaj: ${message}`
     };
 
     try {
