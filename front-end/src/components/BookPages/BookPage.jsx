@@ -8,8 +8,6 @@ import year_icon from "../../assets/calendar.png";
 import isbn_icon from "../../assets/bar-code.png";
 import genre_icon from "../../assets/literature.png";
 import { Rating } from 'react-simple-star-rating';
-import { UserContext } from "../../Context/UserContext";
-import { useContext } from "react";
 import PopUp from "../PopUp/PopUp";
 import PopUpPrelungire from "../PopUpPrelungire/PopUpPrelungire";
 
@@ -22,15 +20,20 @@ function BookPage() {
     const [slide, setSlide] = useState(0);
     const [buttonPopup, setButtonPopup] = useState(false);
     const [isBorrowDisabled, setIsBorrowDisabled] = useState(false);
+    const [isWishlistDisabled, setIsWishlistDisabled] = useState(false);
+    const [wishlistDisabledReason, setWishlistDisabledReason] = useState("");
+    const [isUserBanned, setIsUserBanned] = useState(false);
+    const [borrowDisabledReason, setBorrowDisabledReason] = useState("");
     const scrollRef = useRef(null);
-    const [rating, setRating] = useState(0); // State pentru rating
-    const [reviewsLength, setReviewsLength] = useState(0); // State pentru numărul de review-uri
+    const [rating, setRating] = useState(0);
+    const [reviewsLength, setReviewsLength] = useState(0);
     const [showReviewsPopup, setShowReviewsPopup] = useState(false);
     const [reviews, setReviews] = useState([]);
 
     useEffect(() => {
         fetchSpecificBook();
-        fetchReviews(); // Fetch reviews on component mount
+        fetchReviews();
+        fetchUserStatus(); // Fetch user status on component mount
         window.scrollTo(0, 0);
     }, [id]);
 
@@ -44,10 +47,10 @@ function BookPage() {
                     userData: userDataResponse.data
                 };
             });
-    
+
             const reviewsWithData = await Promise.all(reviewsWithUserData);
             setReviews(reviewsWithData);
-    
+
             const averageRating = reviewsWithData.reduce((acc, curr) => acc + curr.rating, 0) / reviewsWithData.length;
             setRating(averageRating);
             setReviewsLength(reviewsWithData.length);
@@ -55,15 +58,16 @@ function BookPage() {
             console.error('Error fetching reviews:', error);
         }
     };
-    
-    
-    
 
     const fetchSpecificBook = async () => {
         try {
             const response = await axios.get(`http://localhost:5000/carti/find/${id}`);
             setCarte(response.data);
-            setIsBorrowDisabled(response.data.nrExemplareDisponibile <= 0);
+            const isUnavailable = response.data.nrExemplareDisponibile <= 0;
+            setIsBorrowDisabled(isUnavailable);
+            if (isUnavailable) {
+                setBorrowDisabledReason("Nu sunt exemplare disponibile");
+            }
             fetchAutorCarte(response.data.idAutor);
             if (Array.isArray(response.data.imagineCarte)) {
                 const tempImages = response.data.imagineCarte.map(image => `http://localhost:5000/uploads/${image}`);
@@ -80,6 +84,20 @@ function BookPage() {
             setAutorCarte(response.data);
         } catch (error) {
             console.error('Error fetching author:', error);
+        }
+    };
+
+    const fetchUserStatus = async () => {
+        try {
+            const response = await axios.get(`http://localhost:5000/users/${storedUserId}`);
+            const isBanned = response.data.status === 'banned';
+            setIsUserBanned(isBanned);
+            if (isBanned) {
+                setBorrowDisabledReason("Utilizatorul este banat");
+                setWishlistDisabledReason("Utilizatorul este banat");
+            }
+        } catch (error) {
+            console.error('Error fetching user status:', error);
         }
     };
 
@@ -104,7 +122,8 @@ function BookPage() {
             const idC = Number(id);
             const existingWishlistItem = await axios.get(`http://localhost:5000/wishlist/${storedUserId}/${idC}`);
             if (existingWishlistItem.data) {
-                window.alert("Cartea este deja în wishlist!");
+                setIsWishlistDisabled(true);
+                setWishlistDisabledReason("Cartea este deja in wishlist");
                 return;
             }
             const response = await axios.post('http://localhost:5000/wishlist', {
@@ -149,6 +168,7 @@ function BookPage() {
             if (response.data.message === 'No copies available') {
                 window.alert('No copies available for borrowing!');
                 setIsBorrowDisabled(true);
+                setBorrowDisabledReason("Nu sunt exemplare disponibile");
             } else {
                 window.alert("Cartea a fost împrumutată!");
                 await axios.put(`http://localhost:5000/carti/exemplare/${id}`, {
@@ -244,8 +264,19 @@ function BookPage() {
             </div>
 
             <div className="button-book">
-                <button className="button_lend" onClick={addToBorrowList} disabled={isBorrowDisabled}>IMPRUMUTA</button>
-                <button className="button_wishlist" onClick={addToWishlist}>WISHLIST</button>
+                <button 
+                    className="button_lend" 
+                    onClick={addToBorrowList} 
+                    disabled={isBorrowDisabled || isUserBanned}
+                    data-tooltip={borrowDisabledReason}
+                >
+                    IMPRUMUTA
+                </button>
+                <button className="button_wishlist"
+                 onClick={addToWishlist}
+                  disabled={isWishlistDisabled || isUserBanned}
+                  data-tooltip={wishlistDisabledReason} >WISHLIST</button>
+                  
                 <PopUp trigger={buttonPopup} setTrigger={setButtonPopup} handleConfirm={handleConfirm}>
                     <h3 className="title-lending">Doresti sa plasezi imprumutul?</h3>
                     <p>Locatia de unde va fi disponibil pentru ridicat este: ASE, CSIE</p>

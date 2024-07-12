@@ -21,7 +21,7 @@ function BorrowList({ idUser }) {
     const getBorrows = async () => {
         try {
             const response = await axios.get(`http://localhost:5000/imprumuturi/${idUser}`);
-            borrowsDetails(response.data);
+            await borrowsDetails(response.data);
         } catch (error) {
             console.error('Error fetching borrows:', error);
         }
@@ -45,9 +45,25 @@ function BorrowList({ idUser }) {
                     status: borrow.status
                 };
             }));
+            
             setBorrowsDetails(booksDetails);
+
+            // Check for overdue borrows and update user status if necessary
+            const hasOverdue = booksDetails.some(book => book.daysLeft < 0 && book.status !== 'returned');
+            if (hasOverdue) {
+                await updateUserStatus('banned');
+            }
         } catch (error) {
             console.error('Error fetching borrows details:', error);
+        }
+    }
+
+    const updateUserStatus = async (status) => {
+        try {
+            await axios.put(`http://localhost:5000/users/status/${idUser}`, { status });
+            console.log(`User status updated to ${status}`);
+        } catch (error) {
+            console.error('Error updating user status:', error);
         }
     }
 
@@ -98,9 +114,9 @@ function BorrowList({ idUser }) {
             //SALVARE REVIEW
             await axios.post('http://localhost:5000/reviews', reviewData);
     
-            // Set the new return date to the current date
+            //Returnare carte => data retur = data curenta
             const currentDate = new Date();
-            const newReturnDate = currentDate.toISOString(); // Format the date as needed
+            const newReturnDate = currentDate.toISOString();
     
             //STATUS CARTE "RETURNED"
             await axios.put(`http://localhost:5000/imprumuturi/status/${borrowToReturn.idImprumut}`, { status: 'returned', dataRestituire: newReturnDate });
@@ -127,8 +143,8 @@ function BorrowList({ idUser }) {
     
     
     const handleRatingClick = (value) => {
-        console.log('Selected Rating:', value); // Log the selected rating value
-        setRatingValue(value); // Update rating value on star click
+        console.log('Selected Rating:', value); 
+        setRatingValue(value); 
     };
 
     return (
@@ -137,7 +153,7 @@ function BorrowList({ idUser }) {
             {borrowsSpecificDetails.length === 0 ? (
                 <p>Nu există împrumuturi disponibile.</p>
             ) : (
-                // Sort loans: active first, then returned
+                // soarte imprumuturilor in functie de status
                 borrowsSpecificDetails
                     .sort((a, b) => (a.status === 'returned' ? 1 : -1))
                     .map(book => (

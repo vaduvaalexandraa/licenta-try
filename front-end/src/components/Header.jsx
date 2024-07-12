@@ -62,19 +62,22 @@ function Header() {
                 {idUser ? (
                     <>
                         <li><NavLink to="/profile">Profil</NavLink></li>
-                        <li onClick={handleLogout}><a href="#">Deconectare</a></li>
                         {role === 'admin' ? (
                             <li><NavLink to="/admin">Admin</NavLink></li>
                         ) : null}
+                        <li><NavLink to="/contact">Contact</NavLink></li>
+                        <li onClick={handleLogout}><a href="#">Deconectare</a></li>
+                        
                     </>
                 ) : (
                     <>
                         
-                        <li><NavLink to="/signin">Sign In</NavLink></li>
-                        <li><NavLink to="/signup">Sign Up</NavLink></li>
+                        <li><NavLink to="/signin">Conectare</NavLink></li>
+                        <li><NavLink to="/signup">Inregistrare</NavLink></li>
+                        <li><NavLink to="/contact">Contact</NavLink></li>
                     </>
                 )}
-                <li><NavLink to="/contact">Contact</NavLink></li>
+                
                 
             </ul>
         </nav>
