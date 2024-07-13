@@ -59,7 +59,7 @@ function Home() {
                 const imaginee = book.imagineCarte[0];
                 return {
                     ...book,
-                    autor: authorData.nume + ' ' + authorData.prenume,
+                    autor: authorData.prenume + ' ' + authorData.nume,
                     // Modificare aici: utilizează ruta din backend pentru a accesa imaginile
                     image: `http://localhost:5000/uploads/find/${imaginee}`
                 };
@@ -173,7 +173,7 @@ function Home() {
                 <select value={autor} onChange={(e) => setAutor(e.target.value)}>
                 <option value="">Selectează autor</option>
                 {autori.map((author, index) => (
-                    <option key={index} value={author.id}>{author.nume} {author.prenume}</option>
+                    <option key={index} value={author.id}> {author.prenume} {author.nume}</option>
                 ))}
                 </select>
 

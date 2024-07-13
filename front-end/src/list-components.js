@@ -1,4 +1,5 @@
-const genuri=["drama","poezie","roman","nuvela","epopee","eseu","jurnal","memorialistica","publicistica","biografie",
-    "autobiografie","corespondenta","critica","teatru","scenariu","fantasy","psihologie","altele","istorie"]
+const genuri=["actiune","poezie","roman","politiste","fictiune",,"economie","religie","biografie",
+    "autobiografie","critica","teatru","fantasy","psihologie","istorie","informatica",
+     "stiinta si tehnica"]
 
 export default genuri;

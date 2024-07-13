@@ -66,6 +66,7 @@ function Header() {
                             <li><NavLink to="/admin">Admin</NavLink></li>
                         ) : null}
                         <li><NavLink to="/contact">Contact</NavLink></li>
+                        <li><NavLink to="/bookSuggestions">Sugestii</NavLink></li>
                         <li onClick={handleLogout}><a href="#">Deconectare</a></li>
                         
                     </>

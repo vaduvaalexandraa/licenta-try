@@ -9,7 +9,7 @@ function EditBook() {
     const [buttonDeleteBookPopup, setButtonDeleteBookPopup] = useState(false);
     const [buttonEditBookPopup, setButtonEditBookPopup] = useState(false);
     const [bookToEditId, setBookToEditId] = useState(null);
-    const [bookToDeleteId, setBookToDeleteId] = useState(null); // Added bookToDeleteId state
+    const [bookToDeleteId, setBookToDeleteId] = useState(null); 
     const [bookDetails, setBookDetails] = useState({
         ISBN: '',
         titlu: '',
@@ -65,6 +65,7 @@ function EditBook() {
     const deleteBook = async (id) => {
         try {
             await axios.delete(`http://localhost:5000/carti/${id}`);
+            await axios.delete(`http://localhost:5000/wishlist/${id}`);
             // Refresh books after deletion
             getDatabaseBooks();
             // Close the delete confirmation popup

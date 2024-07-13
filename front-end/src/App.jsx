@@ -11,6 +11,7 @@ import Header from './components/Header'
 import Admin from './pages/Admin'
 import Contact from './pages/Contact'
 import EditBook from './components/EditBook/EditBook'
+import BookSuggestions from './components/BookSuggestions/BookSuggestions'
 
 function App() {
 
@@ -28,6 +29,7 @@ function App() {
       <Route path="/admin/*" element={<Admin />} />
       <Route path="/contact" element={<Contact />} />
       <Route path="/editBook" element={<EditBook />} />
+      <Route path="/bookSuggestions" element={<BookSuggestions />} />
     </Routes>
     
     </div>

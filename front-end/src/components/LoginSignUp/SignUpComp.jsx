@@ -1,124 +1,144 @@
-import React from "react";
+import React, { useState } from "react";
 import "./LoginSignUp.css";
 import user_icon from "../../assets/person.png";
 import password_icon from "../../assets/password.png";
 import email_icon from "../../assets/email.png";
 import phone_icon from "../../assets/phone.png";
 import student_mark_icon from "../../assets/student-mark.png";
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
+function SignUpComp() {
+    const navigate = useNavigate();
+    const [formData, setFormData] = useState({
+        firstName: '',
+        lastName: '',
+        studentMark: '',
+        email: '',
+        phoneNumber: '',
+        password: ''
+    });
+    const [errors, setErrors] = useState({});
+    const [successMessage, setSuccessMessage] = useState('');
 
-function SingUpComp() {
-
-    const navigate = useNavigate()
-  
-    const goToLoginPage=()=>{
-      navigate("/signin");
-    }
-    
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
+    const goToLoginPage = () => {
+        navigate("/signin");
+    };
 
-
-    const registerUser=async(userData)=>{
-        try{
-            const response=await axios.post("http://localhost:5000/register",userData);
+    const registerUser = async (userData) => {
+        try {
+            const response = await axios.post("http://localhost:5000/register", userData);
             return response.data;
-        }catch(error){
-            console.log(error);}
+        } catch (error) {
+            console.log(error);
+        }
     };
 
     const validatePassword = (password) => {
         if (password.length < 6) {
-            return "Parola trebuia sa aiba cel putin 6 caractere!";
+            return "Parola trebuie să aibă cel puțin 6 caractere!";
         }
         
         if (!/[A-Z]/.test(password)) {
-            return "Parola trebuie sa contina cel putin o majuscula!";
+            return "Parola trebuie să conțină cel puțin o majusculă!";
         }
 
         if (!/[a-z]/.test(password)) {
-            return "Parola trebuie sa contina cel putin o litera mica!";
+            return "Parola trebuie să conțină cel puțin o literă mică!";
         }
 
         if (!/\d/.test(password)) {
-            return "Parola trebuie sa contina cel putin un caracter numeric!";
+            return "Parola trebuie să conțină cel puțin un caracter numeric!";
         }
 
         if (!/[!@#$%^&*?]/.test(password)) {
-            return "Parola trebuie sa contina cel putin un caracter special(!@#$%^&*)";
+            return "Parola trebuie să conțină cel puțin un caracter special(!@#$%^&*)";
         }
 
         return null;
     };
 
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData({ ...formData, [name]: value });
 
+        let newErrors = { ...errors };
 
-    const handleRegister = async () => {
-        try {
-            const firstName = document.querySelector("input[placeholder='First Name']").value;
-            const lastName = document.querySelector("input[placeholder='Last Name']").value;
-            const studentMark = document.querySelector("input[placeholder='Student Mark']").value;
-            const email = document.querySelector("input[placeholder='Email']").value;
-            const phoneNumber = document.querySelector("input[placeholder='Phone Number']").value;
-            const password = document.querySelector("input[placeholder='Password']").value;
-
-            // Verificăm dacă numele și prenumele au cel puțin 3 caractere
-            if (firstName.length < 3  ) {
-                alert("Numele trebuie sa aiba minim 3 caractere!");
-                return;
-            }
-
-            if(lastName.length < 3){
-                alert("Prenumele trebuie sa aiba minim 3 caractere!");
-                return;
-            }
-
-            // Verificăm lungimea și formatul numărului de telefon
-            if (phoneNumber.length !== 10 ) {
-                alert("Numarul de telefon trebuie sa aiba 10 caractere!");
-                return;
-            }
-
-            if(phoneNumber[0] !== '0' || phoneNumber[1] !== '7'){
-                alert("Numarul de telefon trebuie sa inceapa cu 07!");
-                return;
-            }
-
-            if (!emailRegex.test(email)) {
-                alert("Formatul introdus pentru email nu este corect!");
-                return;
-            }
-
-            const passwordError = validatePassword(password);
-            if (passwordError) {
-                alert(passwordError);
-                return;
-            }
-
-            if (firstName !== "" && lastName !== "" && studentMark !== "" && email !== "" && phoneNumber !== "" && password !== "") {
-                const userData = { firstName, lastName, studentMark, email, phoneNumber, password };
-                const response = await registerUser(userData);
-                console.log(response);
-                document.querySelector("input[placeholder='First Name']").value = "";
-                document.querySelector("input[placeholder='Last Name']").value = "";
-                document.querySelector("input[placeholder='Student Mark']").value = "";
-                document.querySelector("input[placeholder='Email']").value = "";
-                document.querySelector("input[placeholder='Phone Number']").value = "";
-                document.querySelector("input[placeholder='Password']").value = "";
-                window.alert("You have successfully registered!");
-                goToLoginPage();
-            } else {
-                alert("Please fill all the fields!");
-            }
-
-        } catch (error) {
-            console.log(error);
+        if (name === 'firstName' && value.length < 3) {
+            newErrors.firstName = "Numele trebuie să aibă minim 3 caractere!";
+        } else {
+            delete newErrors.firstName;
         }
-    }
 
+        if (name === 'lastName' && value.length < 3) {
+            newErrors.lastName = "Prenumele trebuie să aibă minim 3 caractere!";
+        } else {
+            delete newErrors.lastName;
+        }
+
+        if (name === 'studentMark') {
+            if (value.length !== 9) {
+                newErrors.studentMark = "Formatul pentru marca este invalid!";
+            } else if (value[0] !== 'S') {
+                newErrors.studentMark = "Formatul pentru marca este invalid!";
+            } else {
+                delete newErrors.studentMark;
+            }
+        }
+
+        if (name === 'phoneNumber') {
+            if (value.length !== 10) {
+                newErrors.phoneNumber = "Numărul de telefon trebuie să aibă 10 caractere!";
+            } else if (value[0] !== '0' || value[1] !== '7') {
+                newErrors.phoneNumber = "Numărul de telefon trebuie să înceapă cu 07!";
+            } else {
+                delete newErrors.phoneNumber;
+            }
+        }
+
+        if (name === 'email' && !emailRegex.test(value)) {
+            newErrors.email = "Formatul introdus pentru email nu este corect!";
+        } else {
+            delete newErrors.email;
+        }
+
+        if (name === 'password') {
+            const passwordError = validatePassword(value);
+            if (passwordError) {
+                newErrors.password = passwordError;
+            } else {
+                delete newErrors.password;
+            }
+        }
+
+        setErrors(newErrors);
+    };
+
+    const handleRegister = async (e) => {
+        e.preventDefault();
+        const { firstName, lastName, studentMark, email, phoneNumber, password } = formData;
+
+        if (Object.keys(errors).length === 0 && firstName && lastName && studentMark && email && phoneNumber && password) {
+            const userData = { firstName, lastName, studentMark, email, phoneNumber, password };
+            const response = await registerUser(userData);
+            console.log(response);
+            setFormData({
+                firstName: '',
+                lastName: '',
+                studentMark: '',
+                email: '',
+                phoneNumber: '',
+                password: ''
+            });
+            setSuccessMessage("You have successfully registered!");
+            setTimeout(() => setSuccessMessage(''), 5000);
+            goToLoginPage();
+        } else {
+            setErrors({ form: "Please fill all the fields!" });
+        }
+    };
 
     return (
         <div className="container">
@@ -129,41 +149,86 @@ function SingUpComp() {
             <div className="inputs">
                 <div className="input">
                     <img src={user_icon} alt="" />
-                    <input type="text" placeholder="First Name"/>
+                    <input 
+                        type="text" 
+                        name="firstName"
+                        placeholder="First Name" 
+                        value={formData.firstName}
+                        onChange={handleChange}
+                    />
+                    {errors.firstName && <div className="error">{errors.firstName}</div>}
                 </div>
 
                 <div className="input">
                     <img src={user_icon} alt="" />
-                    <input type="text" placeholder="Last Name"/>
+                    <input 
+                        type="text" 
+                        name="lastName"
+                        placeholder="Last Name" 
+                        value={formData.lastName}
+                        onChange={handleChange}
+                    />
+                    {errors.lastName && <div className="error">{errors.lastName}</div>}
                 </div>
                 
                 <div className="input">
                     <img src={student_mark_icon} alt="" />
-                    <input type="text" placeholder="Student Mark"/>
+                    <input 
+                        type="text" 
+                        name="studentMark"
+                        placeholder="Student Mark" 
+                        value={formData.studentMark}
+                        onChange={handleChange}
+                    />
+                    {errors.studentMark && <div className="error">{errors.studentMark}</div>}
                 </div>
                 <div className="input">
                     <img src={phone_icon} alt="" />
-                    <input type="text" placeholder="Phone Number"/>
+                    <input 
+                        type="text" 
+                        name="phoneNumber"
+                        placeholder="Phone Number" 
+                        value={formData.phoneNumber}
+                        onChange={handleChange}
+                    />
+                    {errors.phoneNumber && <div className="error">{errors.phoneNumber}</div>}
                 </div>
                 <div className="input">
                     <img src={email_icon} alt="" />
-                    <input type="email" placeholder="Email"/>
+                    <input 
+                        type="email" 
+                        name="email"
+                        placeholder="Email" 
+                        value={formData.email}
+                        onChange={handleChange}
+                    />
+                    {errors.email && <div className="error">{errors.email}</div>}
                 </div>
-
 
                 <div className="input">
                     <img src={password_icon} alt="" />
-                    <input type="password" placeholder="Password"/>
+                    <input 
+                        type="password" 
+                        name="password"
+                        placeholder="Password" 
+                        value={formData.password}
+                        onChange={handleChange}
+                    />
+                    {errors.password && <div className="error">{errors.password}</div>}
                 </div>
-
-                    </div>
-           <div className="forgot-password" onClick={goToLoginPage}>Already have an account? <span>Login</span></div>
-            <div className="submit-container">
-
-                <button className="submit" onClick={() => {handleRegister(); }}>Sign Up</button>
             </div>
+
+            <div className="forgot-password" onClick={goToLoginPage}>
+                Already have an account? <span>Login</span>
+            </div>
+            <div className="submit-container">
+                <button className="submit" onClick={handleRegister}>Sign Up</button>
+            </div>
+
+            {errors.form && <div className="form-error">{errors.form}</div>}
+            {successMessage && <div className="success-message">{successMessage}</div>}
         </div>
     );
 }
 
-export default SingUpComp;
+export default SignUpComp;

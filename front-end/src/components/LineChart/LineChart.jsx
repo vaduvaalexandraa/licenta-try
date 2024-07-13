@@ -156,7 +156,7 @@ const LineChart = () => {
   return (
     <div style={{ width: '100%', maxWidth: '800px', height: '500px', margin: '10px' }}>
       <Line ref={chartRef} data={chartData} options={options} />
-      <button onClick={handleDownload}>Descarca</button>
+      <button style={{height:'30px', color: 'black', borderRadius: '5px'}} onClick={handleDownload}>Descarca</button>
     </div>
   );
 };

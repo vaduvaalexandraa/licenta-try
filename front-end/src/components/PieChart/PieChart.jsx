@@ -154,9 +154,9 @@ const PieChart = () => {
   };
 
   return (
-    <div style={{ width: '400px', height: '400px', margin: '10px' }}>
+    <div style={{ width: '500px', height: '500px', margin: '10px' }}>
       <Doughnut ref={chartRef} data={chartData} options={options} />
-      <button onClick={handleDownload}>Descarca</button>
+      <button style={{height:'30px', color: 'black', borderRadius: '5px'}} onClick={handleDownload}>Descarca</button>
     </div>
   );
 };

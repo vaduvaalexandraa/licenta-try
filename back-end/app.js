@@ -81,6 +81,20 @@ app.get('/carti/find/:id',async (req,res)=>{
     }
 });
 
+// Exemplu de definire a rutei în Express.js pentru a returna cărțile în funcție de gen literar
+app.get('/carti/:genLiterar', async (req, res) => {
+    const { genLiterar } = req.params;
+
+    try {
+        const carti = await Carte.findAll({ where: { genLiterar } });
+        res.json(carti);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Eroare internă' });
+    }
+});
+
+
 app.get('/carti/title/:titlu',async (req,res)=>{
     const carte=await Carte.findOne({where:{titlu:req.params.titlu}});
     res.send(carte);
@@ -169,6 +183,14 @@ app.get('/wishlist/:idUser/:idCarte', async (req, res) => {
 app.delete('/wishlist/:idUser/:idCarte', async (req, res) => {
     const wishlistItem = await Wishlist.findOne({
         where: { idUser: req.params.idUser, idCarte: req.params.idCarte }
+    });
+    await wishlistItem.destroy();
+    res.send('Book removed from wishlist!');
+});
+
+app.delete('/wishlist/:idCarte', async (req, res) => {
+    const wishlistItem = await Wishlist.findOne({
+        where: { idCarte: req.params.idCarte }
     });
     await wishlistItem.destroy();
     res.send('Book removed from wishlist!');

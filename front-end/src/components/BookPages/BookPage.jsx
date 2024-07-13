@@ -209,7 +209,7 @@ function BookPage() {
                 <div className="details-container">
                     <div className="specific-book-details">
                         <h1>{carte.titlu}</h1>
-                        <h2>Autor: {autorCarte.nume} {autorCarte.prenume}</h2>
+                        <h2>Autor: {autorCarte.prenume} {autorCarte.nume}</h2>
                         <div className="rating-and-reviews">
                             <Rating className="rating-book" initialValue={rating} stars={5} readonly/>
                             <p className="reviews-count" onClick={() => setShowReviewsPopup(true)}> ({reviewsLength}) review-uri</p>
