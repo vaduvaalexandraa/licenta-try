@@ -20,7 +20,7 @@ function AdminUsers() {
     const user = users.find(user => user.id === userId);
     axios.put(`http://localhost:5000/users/${userId}`, {...user, role: 'admin'})
       .then(() => {
-        // Update the local state to reflect the change immediately
+        // update la starea locala pentru a arata imediat schimbarea
         setUsers(users.map(u => u.id === userId ? {...u, role: 'admin'} : u));
       });
   };
@@ -30,7 +30,7 @@ function AdminUsers() {
     const user = users.find(user => user.id === userId);
     axios.put(`http://localhost:5000/users/${userId}`, {...user, role: ''})
       .then(() => {
-        // Update the local state to reflect the change immediately
+        
         setUsers(users.map(u => u.id === userId ? {...u, role: ''} : u));
       });
   };
@@ -39,7 +39,7 @@ function AdminUsers() {
     console.log(`Ban user with id: ${userId}`);
     axios.delete(`http://localhost:5000/users/${userId}`)
       .then(() => {
-        // Remove the user from the local state to reflect the change immediately
+        
         setUsers(users.filter(u => u.id !== userId));
       });
   };

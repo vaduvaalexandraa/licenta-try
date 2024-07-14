@@ -33,7 +33,7 @@ function BookPage() {
     useEffect(() => {
         fetchSpecificBook();
         fetchReviews();
-        fetchUserStatus(); // Fetch user status on component mount
+        fetchUserStatus(); // verificam daca userul este banat
         window.scrollTo(0, 0);
     }, [id]);
 
@@ -93,8 +93,8 @@ function BookPage() {
             const isBanned = response.data.status === 'banned';
             setIsUserBanned(isBanned);
             if (isBanned) {
-                setBorrowDisabledReason("Utilizatorul este banat");
-                setWishlistDisabledReason("Utilizatorul este banat");
+                setBorrowDisabledReason("Utilizatorul este suspendat");
+                setWishlistDisabledReason("Utilizatorul este suspendat");
             }
         } catch (error) {
             console.error('Error fetching user status:', error);

@@ -38,26 +38,26 @@ function LoginSignUp() {
     const handleLogin = async () => {
         try {
             if (document.querySelector("input[placeholder='Email']").value !== "" &&
-                document.querySelector("input[placeholder='Password']").value !== "") {
+                document.querySelector("input[placeholder='Parola']").value !== "") {
                 const email = document.querySelector("input[placeholder='Email']").value;
-                const password = document.querySelector("input[placeholder='Password']").value;
+                const password = document.querySelector("input[placeholder='Parola']").value;
                 const userData = { email, password };
                 const { data, error } = await loginUser(userData);
     
                 document.querySelector("input[placeholder='Email']").value = "";
-                document.querySelector("input[placeholder='Password']").value = "";
+                document.querySelector("input[placeholder='Parola']").value = "";
     
                 if (error) {
-                    window.alert(error); // Display error message
+                    window.alert(error); 
                 } else if (data && data.message === "Logged in!") {
                     sessionStorage.setItem("userId", data.userId);
-                    window.alert("You have successfully logged in!");
+                    window.alert("Te-ai conectat cu succes!");
                     goToHomePage();
                 } else {
-                    window.alert("Invalid credentials!");
+                    window.alert("Credentiale Invalide!");
                 }
             } else {
-                alert("Please fill all the fields!");
+                alert("Completeaza toate campurile!");
             }
         } catch (error) {
             console.log(error);
@@ -69,7 +69,7 @@ function LoginSignUp() {
 
         <div className="container">
             <div className="header-log">
-                <div className="text">Sign In</div>
+                <div className="text">Autentificare</div>
                 <div className="underline"></div>
             </div>
             <div className="inputs">
@@ -81,13 +81,13 @@ function LoginSignUp() {
 
                 <div className="input">
                     <img src={password_icon} alt="" />
-                    <input type="password" placeholder="Password"/>
+                    <input type="password" placeholder="Parola"/>
                 </div>
             </div>
-            <div className="forgot-password">Forgot Password? <span>Click here!</span></div>
-            <div className="forgot-password" onClick={() => { goToRegisterPage(); }}>Don't have an account?<span> Register here!</span></div>
+            {/* <div className="forgot-password">Forgot Password? <span>Click here!</span></div> */}
+            <div className="forgot-password" onClick={() => { goToRegisterPage(); }}>Nu ai cont creat?<span> Inregistreaza-te acum!</span></div>
             <div className="submit-container">
-                <button className="submit" onClick={() => { handleLogin(); }}>Sign In</button>
+                <button className="submit" onClick={() => { handleLogin(); }}>Conectare</button>
             </div>
         </div>
     );}

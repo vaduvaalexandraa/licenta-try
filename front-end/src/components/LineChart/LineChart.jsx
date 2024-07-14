@@ -24,7 +24,7 @@ const LineChart = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const apiUrl = 'http://localhost:5000/imprumuturi'; // Asigură-te că acesta este URL-ul corect
+        const apiUrl = 'http://localhost:5000/imprumuturi'; 
         console.log('API URL:', apiUrl);
 
         const response = await axios.get(apiUrl);
@@ -41,7 +41,7 @@ const LineChart = () => {
           throw new Error('Fetched data is not an array');
         }
 
-        // Generate the list of last 7 days
+        //generam ultimele 7 zile
         const currentDate = new Date();
         const labels = [];
         for (let i = 6; i >= 0; i--) {
@@ -50,7 +50,7 @@ const LineChart = () => {
           labels.push(date.toLocaleDateString('en-GB'));
         }
 
-        // Count loans per day
+        // numaram imprumuturile pentru fiecare zi
         const loanCounts = labels.reduce((acc, label) => {
           const matchingLoans = loans.filter(loan => {
             const loanDate = new Date(loan.dataImprumut).toLocaleDateString('en-GB');
@@ -62,7 +62,7 @@ const LineChart = () => {
 
         console.log('Loan counts:', loanCounts);
 
-        // Create data array with counts, filling in missing days with zero
+        
         const data = labels.map(label => loanCounts[label] || 0);
 
         console.log('Labels:', labels);
@@ -92,20 +92,20 @@ const LineChart = () => {
     const chart = chartRef.current;
     const canvas = chart.canvas;
 
-    // Create a new canvas with a white background
+    // cream un canvas pentru a putea descarca imaginea
     const newCanvas = document.createElement('canvas');
     newCanvas.width = canvas.width;
     newCanvas.height = canvas.height;
     const ctx = newCanvas.getContext('2d');
 
-    // Fill the background with white
+
     ctx.fillStyle = 'white';
     ctx.fillRect(0, 0, newCanvas.width, newCanvas.height);
 
-    // Draw the original chart onto the new canvas
+
     ctx.drawImage(canvas, 0, 0);
 
-    // Create a download link
+
     const link = document.createElement('a');
     link.href = newCanvas.toDataURL('image/png');
     link.download = 'line_chart.png';
@@ -134,7 +134,7 @@ const LineChart = () => {
         intersect: false,
       },
       datalabels: {
-        display: false, // Ascunde datalabels
+        display: false, 
       },
     },
     scales: {

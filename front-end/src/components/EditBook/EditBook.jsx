@@ -49,7 +49,7 @@ function EditBook() {
                 numarPagini: bookResponse.data.numarPagini,
                 descriere: bookResponse.data.descriere
             });
-            setBookToEditId(id); // Setăm corect bookToEditId cu id-ul cărții
+            setBookToEditId(id);
             setButtonEditBookPopup(true);
         } catch (error) {
             console.error('Error fetching book details:', error);
@@ -76,12 +76,15 @@ function EditBook() {
     }
 
     const handleSubmit = async (e) => {
-        e.preventDefault(); // Prevenirea comportamentului implicit al formularului
+        e.preventDefault(); 
+        if(!bookDetails.ISBN || !bookDetails.titlu || !bookDetails.genLiterar || !bookDetails.anulPublicarii || !bookDetails.numarPagini || !bookDetails.descriere) 
+        {
+            alert('Toate câmpurile sunt obligatorii!');
+            return;
+        }
         try {
             await axios.put(`http://localhost:5000/carti/${bookToEditId}`, bookDetails);
-            // Reîncarcă lista de cărți după editare
             getDatabaseBooks();
-            // Închide popup-ul de editare cărți
             setButtonEditBookPopup(false);
         } catch (error) {
             console.error('Eroare la editarea cărții:', error);

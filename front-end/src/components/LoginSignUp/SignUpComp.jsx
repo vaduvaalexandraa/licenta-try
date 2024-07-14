@@ -136,14 +136,14 @@ function SignUpComp() {
             setTimeout(() => setSuccessMessage(''), 5000);
             goToLoginPage();
         } else {
-            setErrors({ form: "Please fill all the fields!" });
+            setErrors({ form: "Completeaza toate campurile!" });
         }
     };
 
     return (
         <div className="container">
             <div className="header-log">
-                <div className="text">Sign Up</div>
+                <div className="text">Inregistrare</div>
                 <div className="underline"></div>
             </div>
             <div className="inputs">
@@ -152,7 +152,7 @@ function SignUpComp() {
                     <input 
                         type="text" 
                         name="firstName"
-                        placeholder="First Name" 
+                        placeholder="Prenume" 
                         value={formData.firstName}
                         onChange={handleChange}
                     />
@@ -164,7 +164,7 @@ function SignUpComp() {
                     <input 
                         type="text" 
                         name="lastName"
-                        placeholder="Last Name" 
+                        placeholder="Nume" 
                         value={formData.lastName}
                         onChange={handleChange}
                     />
@@ -176,7 +176,7 @@ function SignUpComp() {
                     <input 
                         type="text" 
                         name="studentMark"
-                        placeholder="Student Mark" 
+                        placeholder="Marca de student" 
                         value={formData.studentMark}
                         onChange={handleChange}
                     />
@@ -187,7 +187,7 @@ function SignUpComp() {
                     <input 
                         type="text" 
                         name="phoneNumber"
-                        placeholder="Phone Number" 
+                        placeholder="Numar de telefon" 
                         value={formData.phoneNumber}
                         onChange={handleChange}
                     />
@@ -210,7 +210,7 @@ function SignUpComp() {
                     <input 
                         type="password" 
                         name="password"
-                        placeholder="Password" 
+                        placeholder="Parola" 
                         value={formData.password}
                         onChange={handleChange}
                     />
@@ -219,10 +219,10 @@ function SignUpComp() {
             </div>
 
             <div className="forgot-password" onClick={goToLoginPage}>
-                Already have an account? <span>Login</span>
+                Ai deja un cont? <span>Autentificare</span>
             </div>
             <div className="submit-container">
-                <button className="submit" onClick={handleRegister}>Sign Up</button>
+                <button className="submit" onClick={handleRegister}>Creeaza cont</button>
             </div>
 
             {errors.form && <div className="form-error">{errors.form}</div>}

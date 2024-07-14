@@ -1,7 +1,6 @@
 const User = require('../models/User');
 const bcrypt=require('bcrypt');
 const cookieParser = require('cookie-parser');
-// app.use(cookieParser());
 const{createToken, validateToken}=require('../middleware/JWT');
 
 const loginUser = async (req, res) => {
@@ -9,7 +8,7 @@ const loginUser = async (req, res) => {
 
     const user = await User.findOne({ where: { email: email } });
 
-    // Check if user exists before trying to access its properties
+    // verificam daca user exita in baza de date
     if (!user) {
         return res.status(400).json({ error: "User doesn't exist!" });
     }
@@ -24,7 +23,7 @@ const loginUser = async (req, res) => {
                 maxAge: 60 * 60 * 24 * 30 * 1000,
                 httpOnly: true,
             });
-            // Modified, added userId to send the logged-in user's ID
+
             return res.json({ message: "Logged in!", userId: user.id });
         }
     });
